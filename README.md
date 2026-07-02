@@ -1,4 +1,4 @@
-# Portfolio — Franck Kiemdé
+# Portfolio — Franck Kiemde
 
 Portfolio personnel construit avec **Astro**, **Tailwind CSS v4** et **GSAP**.
 Site statique, très animé, pensé mobile-first, accessible et optimisé Lighthouse.

@@ -1,30 +1,34 @@
 ---
 title: 'Saturn'
-description: "Application de messagerie type Discord : chat temps réel, communautés avec salons textuels et vocaux, appels vidéo en mesh WebRTC, messages vocaux et thèmes personnalisables."
+description: "Réseau social en versions web et mobile : messagerie privée et de groupe en temps réel, communautés avec salons vocaux, appels vidéo en mesh WebRTC et thèmes personnalisables."
+category: 'web'
 cover: '../../assets/covers/saturn.svg'
-tech: ['Next.js', 'NestJS', 'TypeScript', 'Prisma', 'PostgreSQL', 'Socket.IO', 'WebRTC', 'Docker']
+logo: '../../assets/logo saturn blanc.png'
+tech: ['Next.js', 'NestJS', 'React Native', 'TypeScript', 'PostgreSQL', 'Prisma', 'Socket.IO', 'WebRTC', 'Docker', 'Nginx']
 badges: ['Fullstack', 'Temps réel']
+status: 'En cours'
 github: 'https://github.com/Franckprivat/Saturn'
 featured: true
 order: 1
-date: 2026-06-15
+date: 2026-02-01
 ---
 
 ## Le projet
 
-Saturn est mon projet le plus ambitieux : une application de messagerie complète inspirée de
-Discord, construite de bout en bout — du schéma de base de données à l'interface.
+Saturn est mon projet le plus ambitieux : un réseau social complet inspiré de Discord,
+en versions web **et** mobile, construit de bout en bout — du schéma de base de
+données à l'interface.
 
 ## Fonctionnalités clés
 
-- **Chat en temps réel** avec Socket.IO : messages, accusés de lecture façon WhatsApp, messages vocaux enregistrés dans le navigateur
+- **Chat en temps réel** avec Socket.IO : messages privés et de groupe, accusés de lecture, messages vocaux enregistrés dans le navigateur
 - **Communautés** : serveurs avec salons textuels et vocaux, rôles et invitations
 - **Appels audio / vidéo** en topologie mesh WebRTC, avec journal d'appels
-- **Authentification** gérée par better-auth, intégrée à NestJS
-- **Thèmes personnalisables** : cinq palettes pilotées par variables CSS, sans flash au chargement
+- **Version mobile** en React Native partageant la même API NestJS
+- **Thèmes personnalisables** : palettes pilotées par variables CSS, sans flash au chargement
 
 ## Ce que j'ai appris
 
-Le temps réel change tout : gestion des reconnexions socket, synchronisation de l'état entre
-plusieurs clients, signalisation WebRTC… C'est aussi sur ce projet que j'ai structuré un vrai
-monorepo backend / frontend avec Docker et Nginx en reverse proxy.
+Le temps réel change tout : gestion des reconnexions socket, synchronisation de l'état
+entre plusieurs clients, signalisation WebRTC… C'est aussi sur ce projet que j'ai
+structuré un vrai monorepo backend / frontend avec Docker et Nginx en reverse proxy.

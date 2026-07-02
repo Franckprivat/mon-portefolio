@@ -10,8 +10,8 @@ import Button from '../ui/Button.astro';
 import SectionHeading from '../ui/SectionHeading.astro';
 
 const stats = [
-	{ value: '2+', label: 'années de projets web' },
-	{ value: '10+', label: 'projets livrés (dev & design)' },
+	{ value: '5', label: 'applications web livrées' },
+	{ value: '15+', label: 'créations design & branding' },
 	{ value: '2', label: 'univers : marketing & code' },
 ];
 ---
@@ -34,7 +34,7 @@ const stats = [
 			<div class="card-premium overflow-hidden p-2" data-tilt>
 				<Image
 					src={portrait}
-					alt="Portrait de Franck Kiemdé"
+					alt="Portrait de Franck Kiemde"
 					width={480}
 					class="aspect-[4/5] w-full rounded-xl object-cover"
 					loading="lazy"
@@ -44,7 +44,7 @@ const stats = [
 				class="glass absolute -right-3 -bottom-4 flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium text-ink shadow-lg"
 			>
 				<MapPin size={13} class="text-accent" aria-hidden="true" />
-				France
+				Montpellier
 			</p>
 		</div>
 
@@ -52,14 +52,15 @@ const stats = [
 		<div>
 			<p class="flex items-center gap-2 text-sm font-semibold text-accent" data-reveal="up">
 				<GraduationCap size={17} aria-hidden="true" />
-				EPITECH — Pré-MSc, promo 2024
+				EPITECH Montpellier — Master of Science, 1ère année
 			</p>
 			<p class="mt-4 text-base leading-relaxed text-ink-muted" data-reveal="up" data-reveal-delay="0.1">
 				Après un Bachelor en marketing digital et plusieurs expériences en SEO et
 				communication, j'ai choisi de passer de l'autre côté : construire moi-même les
 				produits. Aujourd'hui je développe des applications fullstack —
 				comme <a href="/projects/saturn" class="font-medium text-accent underline underline-offset-2">Saturn</a>,
-				ma messagerie temps réel — et je cherche une alternance pour progresser en équipe.
+				mon réseau social temps réel — et je cherche une <strong class="text-ink">alternance
+				dès septembre 2026</strong> (rythme : 1 semaine en formation / 9 en entreprise).
 			</p>
 
 			<dl class="mt-9 grid grid-cols-3 gap-4" data-reveal-stagger>

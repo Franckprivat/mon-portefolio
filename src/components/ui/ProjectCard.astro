@@ -18,7 +18,7 @@ interface Props {
 }
 
 const { project, eager = false } = Astro.props;
-const { title, description, cover, tech, badges, github, demo } = project.data;
+const { title, description, cover, logo, status, tech, badges, github, demo } = project.data;
 const url = `/projects/${project.id}`;
 ---
 
@@ -52,11 +52,42 @@ const url = `/projects/${project.id}`;
 				</div>
 			)
 		}
+		{
+			status && (
+				<div class="absolute top-3 left-3">
+					<span
+						class={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium backdrop-blur-md ${
+							status === 'En cours'
+								? 'border-amber-400/30 bg-amber-400/15 text-amber-300'
+								: 'border-emerald-400/30 bg-emerald-400/15 text-emerald-300'
+						}`}
+					>
+						<span
+							class={`size-1.5 rounded-full ${status === 'En cours' ? 'animate-pulse-soft bg-amber-400 motion-reduce:animate-none' : 'bg-emerald-400'}`}
+							aria-hidden="true"
+						/>
+						{status}
+					</span>
+				</div>
+			)
+		}
 	</a>
 
 	<div class="flex grow flex-col p-6">
 		<div class="flex items-start justify-between gap-3">
-			<h3 class="font-display text-lg font-semibold text-ink">
+			<h3 class="font-display flex items-center gap-2.5 text-lg font-semibold text-ink">
+				{
+					logo && (
+						<Image
+							src={logo}
+							alt=""
+							width={56}
+							height={56}
+							loading="lazy"
+							class="size-7 shrink-0 rounded-lg object-contain"
+						/>
+					)
+				}
 				<a href={url} class="after:absolute after:inset-0" data-cursor>
 					{title}
 				</a>

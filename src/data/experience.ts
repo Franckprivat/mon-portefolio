@@ -1,4 +1,4 @@
-/** Parcours professionnel, formation et valeurs — données réelles de Franck. */
+/** Parcours professionnel, formation et valeurs — données réelles du CV de Franck. */
 
 export interface TimelineItem {
 	title: string;
@@ -16,7 +16,7 @@ export const experiences: TimelineItem[] = [
 		title: 'Rédacteur Web SEO',
 		organization: 'Événement Animation Artistique / Steve Mind',
 		type: 'Stage',
-		period: 'Mars 2024 — Juillet 2024',
+		period: 'Mars 2024 — Juin 2024',
 		description:
 			'Production de contenus optimisés et intégration directe sur les sites du groupe.',
 		tasks: [
@@ -56,17 +56,17 @@ export const experiences: TimelineItem[] = [
 /** Formation (timeline). */
 export const education: TimelineItem[] = [
 	{
-		title: 'Pré-MSc — Informatique',
-		organization: 'EPITECH',
+		title: 'Master of Science — 1ère année',
+		organization: 'EPITECH Montpellier',
 		type: 'Formation',
-		period: '2024 — Aujourd’hui',
+		period: '2024 — 2027',
 		description:
-			"Apprentissage par projets : développement web fullstack, C, algorithmique, DevOps. Préparation au MSc Pro (alternance).",
-		tech: ['TypeScript', 'React', 'NestJS', 'Docker', 'C'],
+			"Apprentissage par projets : développement fullstack web et mobile, containerisation, bases de données, CI/CD. Rythme alternance : 1 semaine en formation / 9 semaines en entreprise.",
+		tech: ['TypeScript', 'React', 'NestJS', 'Docker', 'PostgreSQL'],
 	},
 	{
-		title: 'Bachelor Digital Marketing & Social Media',
-		organization: 'Digital College',
+		title: 'Bachelor Marketing Digital & Social Media',
+		organization: 'Digital College Montpellier',
 		type: 'Formation',
 		period: '2021 — 2024',
 		description:
@@ -75,7 +75,7 @@ export const education: TimelineItem[] = [
 	},
 ];
 
-/** Valeurs / qualités mises en avant sur la page À propos. */
+/** Valeurs / qualités mises en avant sur la page À propos (soft skills du CV). */
 export interface Value {
 	title: string;
 	description: string;
@@ -85,25 +85,25 @@ export interface Value {
 
 export const values: Value[] = [
 	{
-		title: 'Curiosité',
+		title: 'Adaptabilité',
 		description:
-			"J'apprends vite et en continu : chaque projet est l'occasion d'explorer une techno ou un pattern nouveau.",
+			"Du marketing au code, du web au mobile : j'apprends vite et je m'intègre rapidement à de nouveaux environnements.",
 		lucide: 'sparkles',
 	},
 	{
-		title: 'Sens du produit',
+		title: 'Gestion de projet',
 		description:
-			'Mon passé en marketing digital me fait penser utilisateur, référencement et impact — pas seulement code.',
+			'Habitué à cadrer, découper et livrer : chaque projet EPITECH est mené du cahier des charges à la mise en production.',
 		lucide: 'target',
 	},
 	{
 		title: "Esprit d'équipe",
 		description:
-			"Habitué au travail en groupe à EPITECH : revues de code, pair programming et communication claire.",
+			'Revues de code, pair programming, communication claire : je travaille en groupe au quotidien à EPITECH.',
 		lucide: 'users',
 	},
 	{
-		title: 'Livraison',
+		title: 'Autonomie & fiabilité',
 		description:
 			"Je vais au bout des choses : un projet n'a de valeur que déployé, documenté et utilisable.",
 		lucide: 'rocket',

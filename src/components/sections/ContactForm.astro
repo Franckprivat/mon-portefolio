@@ -15,9 +15,9 @@ import Button from '../ui/Button.astro';
 const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
 
 const fields = [
-	{ id: 'name', label: 'Nom', type: 'text', autocomplete: 'name' },
-	{ id: 'email', label: 'Email', type: 'email', autocomplete: 'email' },
-	{ id: 'subject', label: 'Sujet', type: 'text', autocomplete: 'off' },
+	{ id: 'name', label: 'Nom', type: 'text', autocomplete: 'name', maxlength: 100 },
+	{ id: 'email', label: 'Email', type: 'email', autocomplete: 'email', maxlength: 150 },
+	{ id: 'subject', label: 'Sujet', type: 'text', autocomplete: 'off', maxlength: 150 },
 ] as const;
 ---
 
@@ -25,7 +25,7 @@ const fields = [
 	<form id="contact-form" method="post" novalidate data-endpoint={endpoint} data-email={CONTACT.email}>
 		<div class="grid gap-6 sm:grid-cols-2">
 			{
-				fields.map(({ id, label, type, autocomplete }) => (
+				fields.map(({ id, label, type, autocomplete, maxlength }) => (
 					<div class={id === 'subject' ? 'sm:col-span-2' : ''}>
 						<label for={id} class="mb-2 block text-sm font-medium text-ink">
 							{label} <span class="text-accent">*</span>
@@ -35,6 +35,7 @@ const fields = [
 							name={id}
 							type={type}
 							autocomplete={autocomplete}
+							maxlength={maxlength}
 							required
 							class="w-full rounded-xl border border-line bg-bg-soft/60 px-4 py-3 text-sm text-ink transition-all duration-300 outline-none placeholder:text-ink-faint focus:border-accent focus:shadow-[0_0_0_4px_var(--accent-soft)]"
 							placeholder={label}
@@ -53,6 +54,7 @@ const fields = [
 					id="message"
 					name="message"
 					rows="6"
+					maxlength="5000"
 					required
 					class="w-full resize-y rounded-xl border border-line bg-bg-soft/60 px-4 py-3 text-sm text-ink transition-all duration-300 outline-none placeholder:text-ink-faint focus:border-accent focus:shadow-[0_0_0_4px_var(--accent-soft)]"
 					placeholder="Parlez-moi de votre projet…"

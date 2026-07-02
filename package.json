@@ -6,7 +6,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check": "astro check"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.14",
@@ -22,6 +23,8 @@
     "tailwindcss": "^4.3.2"
   },
   "devDependencies": {
-    "simple-icons": "^16.24.1"
+    "@astrojs/check": "^0.9.9",
+    "simple-icons": "^16.24.1",
+    "typescript": "^5.9.3"
   }
 }

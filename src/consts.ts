@@ -4,18 +4,21 @@
  */
 
 export const SITE = {
-	title: 'Franck Kiemdé — Développeur Web Fullstack',
-	name: 'Franck Kiemdé',
-	role: 'Développeur Web Fullstack',
+	title: 'Franck Kiemde — Développeur Fullstack',
+	name: 'Franck Kiemde',
+	role: 'Développeur Fullstack',
 	description:
-		"Portfolio de Franck Kiemdé — développeur web fullstack en formation à EPITECH (Pré-MSc), avec un parcours en marketing digital et SEO. Next.js, NestJS, Astro, TypeScript.",
+		"Portfolio de Franck Kiemde — développeur fullstack, étudiant en Master of Science à EPITECH Montpellier, en recherche d'alternance dès septembre 2026. Next.js, NestJS, React Native, TypeScript.",
 	locale: 'fr_FR',
 	lang: 'fr',
+	location: 'Montpellier',
 } as const;
 
 export const CONTACT = {
-	email: 'kiemdefranck5@gmail.com',
-	github: 'https://github.com/Franck300302',
+	email: 'franck.kiemde@epitech.eu',
+	phone: '06 47 30 72 93',
+	github: 'https://github.com/Franckprivat',
+	githubHandle: '@Franckprivat',
 	// TODO Franck : remplace par l'URL exacte de ton profil LinkedIn.
 	linkedin: 'https://www.linkedin.com/in/franck-kiemde',
 	/** CV téléchargeable — dépose ton PDF dans public/cv-franck-kiemde.pdf */

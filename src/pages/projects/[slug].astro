@@ -20,11 +20,11 @@ export async function getStaticPaths() {
 }
 
 const { project, next } = Astro.props;
-const { title, description, cover, tech, badges, github, demo } = project.data;
+const { title, description, cover, logo, status, tech, badges, github, demo } = project.data;
 const { Content } = await render(project);
 ---
 
-<BaseLayout title={`${title} — Franck Kiemdé`} description={description} type="article">
+<BaseLayout title={`${title} — Franck Kiemde`} description={description} type="article">
 	<article class="mx-auto max-w-4xl px-6 pt-36 pb-24">
 		<a
 			href="/projects"
@@ -36,15 +36,44 @@ const { Content } = await render(project);
 		</a>
 
 		<header>
-			<div class="flex flex-wrap gap-2" data-reveal="up">
+			<div class="flex flex-wrap items-center gap-2" data-reveal="up">
 				{badges.map((b) => <Badge tone="accent">{b}</Badge>)}
+				{
+					status && (
+						<span
+							class={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium ${
+								status === 'En cours'
+									? 'border-amber-400/30 bg-amber-400/15 text-amber-300'
+									: 'border-emerald-400/30 bg-emerald-400/15 text-emerald-300'
+							}`}
+						>
+							<span
+								class={`size-1.5 rounded-full ${status === 'En cours' ? 'bg-amber-400' : 'bg-emerald-400'}`}
+								aria-hidden="true"
+							/>
+							{status}
+						</span>
+					)
+				}
 			</div>
-			<h1
-				class="font-display mt-4 text-4xl font-bold tracking-tight text-ink sm:text-5xl"
-				data-split
-			>
-				{title}
-			</h1>
+			<div class="mt-4 flex items-center gap-4">
+				{
+					logo && (
+						<Image
+							src={logo}
+							alt=""
+							width={112}
+							height={112}
+							loading="eager"
+							class="size-12 shrink-0 rounded-xl object-contain sm:size-14"
+							data-reveal="zoom"
+						/>
+					)
+				}
+				<h1 class="font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl" data-split>
+					{title}
+				</h1>
+			</div>
 			<p class="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted" data-reveal="up" data-reveal-delay="0.15">
 				{description}
 			</p>

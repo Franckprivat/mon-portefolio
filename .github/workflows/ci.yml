@@ -1,0 +1,33 @@
+# CI du portfolio : vérification des types + build sur chaque push et PR.
+# Si l'un des deux échoue, GitHub affiche une croix rouge sur le commit —
+# on ne peut pas casser le site sans le voir.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    name: Types & build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      - name: Vérifier les types (astro check)
+        run: npm run check
+
+      - name: Construire le site
+        run: npm run build

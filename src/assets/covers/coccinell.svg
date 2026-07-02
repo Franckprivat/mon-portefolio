@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="Coccinell — time manager d'entreprise">
+  <defs>
+    <linearGradient id="bgC" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#160f16"/>
+      <stop offset="1" stop-color="#26141c"/>
+    </linearGradient>
+    <radialGradient id="haloC" cx="0.75" cy="0.35" r="0.6">
+      <stop offset="0" stop-color="#f43f5e" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#f43f5e" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="accC" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fb7185"/>
+      <stop offset="1" stop-color="#f97316"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="750" fill="url(#bgC)"/>
+  <rect width="1200" height="750" fill="url(#haloC)"/>
+  <!-- Horloge stylisée -->
+  <g transform="translate(890 310)">
+    <circle r="120" fill="none" stroke="url(#accC)" stroke-width="10"/>
+    <circle r="8" fill="#fb7185"/>
+    <path d="M0 0 L0 -72" stroke="#fb7185" stroke-width="10" stroke-linecap="round"/>
+    <path d="M0 0 L48 28" stroke="#f97316" stroke-width="10" stroke-linecap="round"/>
+    <!-- points de coccinelle -->
+    <circle cx="150" cy="-90" r="12" fill="#fb7185" opacity="0.8"/>
+    <circle cx="-160" cy="60" r="9" fill="#f97316" opacity="0.7"/>
+    <circle cx="90" cy="150" r="7" fill="#fb7185" opacity="0.6"/>
+  </g>
+  <g font-family="'Space Grotesk', 'Segoe UI', sans-serif">
+    <text x="90" y="360" font-size="92" font-weight="700" fill="#ffe4e6" letter-spacing="-2">Coccinell</text>
+    <text x="92" y="420" font-size="29" fill="#fda4af">Time manager pour l'entreprise et ses salariés</text>
+  </g>
+  <g transform="translate(90 470)" font-family="'Segoe UI', sans-serif" font-size="22" fill="#fecdd3">
+    <rect width="118" height="46" rx="23" fill="#f43f5e" fill-opacity="0.14" stroke="#f43f5e" stroke-opacity="0.4"/>
+    <text x="59" y="30" text-anchor="middle">NestJS</text>
+    <rect x="134" width="106" height="46" rx="23" fill="#f43f5e" fill-opacity="0.14" stroke="#f43f5e" stroke-opacity="0.4"/>
+    <text x="187" y="30" text-anchor="middle">React</text>
+    <rect x="256" width="146" height="46" rx="23" fill="#f43f5e" fill-opacity="0.14" stroke="#f43f5e" stroke-opacity="0.4"/>
+    <text x="329" y="30" text-anchor="middle">MongoDB</text>
+  </g>
+</svg>

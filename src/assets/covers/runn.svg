@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="Runn — e-commerce de chaussures">
+  <defs>
+    <linearGradient id="bgR" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f1512"/>
+      <stop offset="1" stop-color="#13231c"/>
+    </linearGradient>
+    <radialGradient id="haloR" cx="0.75" cy="0.35" r="0.6">
+      <stop offset="0" stop-color="#10b981" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#10b981" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="accR" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#34d399"/>
+      <stop offset="1" stop-color="#22d3ee"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="750" fill="url(#bgR)"/>
+  <rect width="1200" height="750" fill="url(#haloR)"/>
+  <!-- Basket stylisée -->
+  <g transform="translate(790 250)" stroke="url(#accR)" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M0 90 C10 45 30 30 60 40 L130 65 C190 85 250 90 300 90 L300 130 L0 130 Z"/>
+    <path d="M70 45 L95 75 M110 58 L130 85"/>
+    <path d="M-40 100 h25 M-55 125 h40" stroke-opacity="0.6"/>
+  </g>
+  <g font-family="'Space Grotesk', 'Segoe UI', sans-serif">
+    <text x="90" y="360" font-size="92" font-weight="700" fill="#d1fae5" letter-spacing="-2">Runn</text>
+    <text x="92" y="420" font-size="29" fill="#6ee7b7">E-commerce fullstack de sneakers</text>
+  </g>
+  <g transform="translate(90 470)" font-family="'Segoe UI', sans-serif" font-size="22" fill="#a7f3d0">
+    <rect width="118" height="46" rx="23" fill="#10b981" fill-opacity="0.14" stroke="#10b981" stroke-opacity="0.4"/>
+    <text x="59" y="30" text-anchor="middle">Next.js</text>
+    <rect x="134" width="112" height="46" rx="23" fill="#10b981" fill-opacity="0.14" stroke="#10b981" stroke-opacity="0.4"/>
+    <text x="190" y="30" text-anchor="middle">Strapi</text>
+    <rect x="262" width="180" height="46" rx="23" fill="#10b981" fill-opacity="0.14" stroke="#10b981" stroke-opacity="0.4"/>
+    <text x="352" y="30" text-anchor="middle">Kubernetes</text>
+  </g>
+</svg>

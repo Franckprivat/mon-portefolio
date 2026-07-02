@@ -97,6 +97,16 @@
 		});
 	}
 
-	document.addEventListener('astro:page-load', startParticles);
+	// Démarrage différé : les particules attendent que le thread principal
+	// soit libre pour ne pas retarder l'interactivité de la page.
+	function idleStart(): void {
+		if ('requestIdleCallback' in window) {
+			requestIdleCallback(() => startParticles(), { timeout: 2000 });
+		} else {
+			setTimeout(startParticles, 800);
+		}
+	}
+
+	document.addEventListener('astro:page-load', idleStart);
 	document.addEventListener('astro:before-swap', () => cancelAnimationFrame(raf));
 </script>

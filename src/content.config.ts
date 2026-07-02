@@ -11,8 +11,14 @@ const projects = defineCollection({
 		z.object({
 			title: z.string(),
 			description: z.string(),
+			/** Catégorie : application web ou création visuelle / design. */
+			category: z.enum(['web', 'design']),
 			/** Image de couverture (affichée sur la carte et la page projet). */
 			cover: image(),
+			/** Logo du projet (petit, affiché à côté du titre). */
+			logo: image().optional(),
+			/** Statut affiché en badge : « Livré », « En cours »… */
+			status: z.string().optional(),
 			/** Technologies utilisées — sert aussi au filtre de la page projets. */
 			tech: z.array(z.string()),
 			/** Badges courts affichés sur la carte : « Fullstack », « Design »… */

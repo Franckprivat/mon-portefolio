@@ -4,7 +4,9 @@
  * - devient « verre dépoli » et se compacte au scroll (classe .nav-scrolled via app.ts)
  * - lien actif souligné, menu mobile plein écran animé
  */
+import { Image } from 'astro:assets';
 import { Command, Menu, X } from '@lucide/astro';
+import logo from '../../assets/logo-fk.png';
 import { NAV_LINKS, SITE } from '../../consts';
 import ThemeToggle from '../ui/ThemeToggle.astro';
 
@@ -22,10 +24,10 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
 		<!-- Logo -->
 		<a
 			href="/"
-			class="font-display text-lg font-bold tracking-tight text-ink"
-			aria-label={`${SITE.name} — accueil`}
+			class="font-display flex items-center gap-2.5 text-lg font-bold tracking-tight text-ink"
 			data-magnetic="0.2"
 		>
+			<Image src={logo} alt="" width={44} height={66} class="h-8 w-auto" loading="eager" />
 			franck<span class="text-gradient">.k</span>
 		</a>
 

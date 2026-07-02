@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="Teach'r — application web d'apprentissage">
+  <defs>
+    <linearGradient id="bgT" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#151122"/>
+      <stop offset="1" stop-color="#231a2e"/>
+    </linearGradient>
+    <radialGradient id="haloT" cx="0.75" cy="0.3" r="0.6">
+      <stop offset="0" stop-color="#f59e0b" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#f59e0b" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="accT" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#fb7185"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="750" fill="url(#bgT)"/>
+  <rect width="1200" height="750" fill="url(#haloT)"/>
+  <g transform="translate(880 300)" stroke="url(#accT)" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-110 -30 L0 -85 L110 -30 L0 25 Z"/>
+    <path d="M-62 -5 v75 c0 28 124 28 124 0 v-75"/>
+    <path d="M110 -30 v95"/>
+  </g>
+  <g font-family="'Space Grotesk', 'Segoe UI', sans-serif">
+    <text x="90" y="360" font-size="92" font-weight="700" fill="#fef3c7" letter-spacing="-2">Teach'r</text>
+    <text x="92" y="420" font-size="29" fill="#fcd34d">Plateforme d'apprentissage fullstack</text>
+  </g>
+  <g transform="translate(90 470)" font-family="'Segoe UI', sans-serif" font-size="22" fill="#fde68a">
+    <rect width="106" height="46" rx="23" fill="#f59e0b" fill-opacity="0.14" stroke="#f59e0b" stroke-opacity="0.4"/>
+    <text x="53" y="30" text-anchor="middle">React</text>
+    <rect x="122" width="136" height="46" rx="23" fill="#f59e0b" fill-opacity="0.14" stroke="#f59e0b" stroke-opacity="0.4"/>
+    <text x="190" y="30" text-anchor="middle">Symfony</text>
+    <rect x="274" width="136" height="46" rx="23" fill="#f59e0b" fill-opacity="0.14" stroke="#f59e0b" stroke-opacity="0.4"/>
+    <text x="342" y="30" text-anchor="middle">MariaDB</text>
+  </g>
+</svg>

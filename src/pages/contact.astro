@@ -2,7 +2,7 @@
 /**
  * Page contact : formulaire validé + coordonnées directes.
  */
-import { Mail, MapPin } from '@lucide/astro';
+import { Mail, MapPin, Phone } from '@lucide/astro';
 import ContactForm from '../components/sections/ContactForm.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
 import SocialIcon from '../components/ui/SocialIcon.astro';
@@ -17,14 +17,20 @@ const channels = [
 		Icon: Mail,
 	},
 	{
+		label: 'Téléphone',
+		value: CONTACT.phone,
+		href: `tel:+33${CONTACT.phone.replaceAll(' ', '').slice(1)}`,
+		Icon: Phone,
+	},
+	{
 		label: 'GitHub',
-		value: '@Franck300302',
+		value: CONTACT.githubHandle,
 		href: CONTACT.github,
 		brand: 'github' as const,
 	},
 	{
 		label: 'LinkedIn',
-		value: 'Franck Kiemdé',
+		value: 'Franck Kiemde',
 		href: CONTACT.linkedin,
 		brand: 'linkedin' as const,
 	},
@@ -32,8 +38,8 @@ const channels = [
 ---
 
 <BaseLayout
-	title="Contact — Franck Kiemdé"
-	description="Contactez Franck Kiemdé : alternance, projet web ou simple question. Réponse rapide garantie."
+	title="Contact — Franck Kiemde"
+	description="Contactez Franck Kiemde : alternance, projet web ou simple question. Réponse rapide garantie."
 >
 	<section class="mx-auto max-w-6xl px-6 pt-36 pb-24">
 		<SectionHeading
@@ -76,7 +82,7 @@ const channels = [
 						<span class="block text-xs font-semibold tracking-wider text-ink-faint uppercase">
 							Localisation
 						</span>
-						<span class="mt-0.5 block text-sm font-medium text-ink">France · télétravail OK</span>
+						<span class="mt-0.5 block text-sm font-medium text-ink">Montpellier · télétravail OK</span>
 					</span>
 				</div>
 			</div>

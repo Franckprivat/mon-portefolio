@@ -111,14 +111,17 @@ function setupTextReveals(): void {
 		const gradient = el.classList.contains('text-gradient');
 		if (gradient) el.classList.remove('text-gradient');
 
+		// Le texte réel reste lisible par les lecteurs d'écran (sr-only),
+		// les mots animés sont décoratifs (aria-hidden).
 		const words = (el.textContent ?? '').trim().split(/\s+/);
-		el.setAttribute('aria-label', words.join(' '));
-		el.innerHTML = words
-			.map(
-				(w) =>
-					`<span class="inline-block overflow-hidden align-bottom" aria-hidden="true"><span class="inline-block will-change-transform${gradient ? ' text-gradient' : ''}" data-word>${w}</span></span>`
-			)
-			.join(' ');
+		el.innerHTML =
+			`<span class="sr-only">${words.join(' ')}</span>` +
+			words
+				.map(
+					(w) =>
+						`<span class="inline-block overflow-hidden align-bottom" aria-hidden="true"><span class="inline-block will-change-transform${gradient ? ' text-gradient' : ''}" data-word>${w}</span></span>`
+				)
+				.join(' ');
 
 		gsap.fromTo(
 			el.querySelectorAll('[data-word]'),
