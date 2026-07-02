@@ -1,0 +1,24 @@
+---
+/** Page 404 — perdue dans l'espace, comme il se doit pour un site nommé d'après Saturne. */
+import { Home } from '@lucide/astro';
+import Button from '../components/ui/Button.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Page introuvable — Franck Kiemdé" description="Cette page n'existe pas (ou plus).">
+	<section class="flex min-h-svh flex-col items-center justify-center px-6 text-center">
+		<p class="font-display text-gradient text-8xl font-bold sm:text-9xl" data-reveal="zoom">404</p>
+		<h1 class="font-display mt-6 text-2xl font-semibold text-ink sm:text-3xl" data-split>
+			Perdu dans l'espace
+		</h1>
+		<p class="mt-4 max-w-md text-ink-muted" data-reveal="up" data-reveal-delay="0.2">
+			Cette page a dérivé hors de mon orbite. Revenez en terrain connu.
+		</p>
+		<div class="mt-9" data-reveal="up" data-reveal-delay="0.35">
+			<Button href="/">
+				<Home size={16} aria-hidden="true" />
+				Retour à l'accueil
+			</Button>
+		</div>
+	</section>
+</BaseLayout>

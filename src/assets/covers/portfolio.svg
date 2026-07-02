@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="Portfolio — site personnel construit avec Astro">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#101018"/>
+      <stop offset="1" stop-color="#161e2e"/>
+    </linearGradient>
+    <radialGradient id="halo2" cx="0.25" cy="0.3" r="0.6">
+      <stop offset="0" stop-color="#22d3ee" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="fk" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#a78bfa"/>
+      <stop offset="1" stop-color="#22d3ee"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="750" fill="url(#bg2)"/>
+  <rect width="1200" height="750" fill="url(#halo2)"/>
+  <g opacity="0.14" stroke="#94a3b8">
+    <path d="M0 187.5h1200M0 375h1200M0 562.5h1200"/>
+    <path d="M300 0v750M600 0v750M900 0v750"/>
+  </g>
+  <g transform="translate(600 330)" text-anchor="middle" font-family="'Space Grotesk', 'Segoe UI', sans-serif">
+    <text y="40" font-size="190" font-weight="700" fill="url(#fk)" letter-spacing="-6">FK</text>
+    <text y="130" font-size="34" fill="#cbd5e1">Portfolio — Astro · GSAP · Tailwind</text>
+  </g>
+  <g fill="none" stroke="url(#fk)" stroke-width="2" opacity="0.7">
+    <rect x="380" y="180" width="440" height="290" rx="24"/>
+  </g>
+  <circle cx="380" cy="180" r="8" fill="#a78bfa"/>
+  <circle cx="820" cy="470" r="8" fill="#22d3ee"/>
+</svg>

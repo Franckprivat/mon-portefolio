@@ -1,0 +1,85 @@
+---
+/**
+ * Aperçu « À propos » sur l'accueil : photo + pitch + chiffres clés.
+ * La version complète vit sur /about.
+ */
+import { Image } from 'astro:assets';
+import { ArrowRight, GraduationCap, MapPin } from '@lucide/astro';
+import portrait from '../../assets/franck.jpg';
+import Button from '../ui/Button.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+
+const stats = [
+	{ value: '2+', label: 'années de projets web' },
+	{ value: '10+', label: 'projets livrés (dev & design)' },
+	{ value: '2', label: 'univers : marketing & code' },
+];
+---
+
+<section id="apropos" class="mx-auto max-w-6xl scroll-mt-24 px-6 py-24 md:py-32">
+	<SectionHeading
+		eyebrow="À propos"
+		title="Un développeur qui pense produit"
+		description="Trois ans de marketing digital avant EPITECH : je code avec l'utilisateur, le SEO et le design en tête."
+	/>
+
+	<div class="grid items-center gap-12 lg:grid-cols-[0.85fr_1.15fr]">
+		<!-- Photo -->
+		<div class="relative mx-auto w-full max-w-sm" data-reveal="left">
+			<div
+				class="absolute -inset-4 -z-10 rounded-3xl bg-linear-120 from-accent/30 to-accent-2/30 blur-2xl"
+				aria-hidden="true"
+			>
+			</div>
+			<div class="card-premium overflow-hidden p-2" data-tilt>
+				<Image
+					src={portrait}
+					alt="Portrait de Franck Kiemdé"
+					width={480}
+					class="aspect-[4/5] w-full rounded-xl object-cover"
+					loading="lazy"
+				/>
+			</div>
+			<p
+				class="glass absolute -right-3 -bottom-4 flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium text-ink shadow-lg"
+			>
+				<MapPin size={13} class="text-accent" aria-hidden="true" />
+				France
+			</p>
+		</div>
+
+		<!-- Texte -->
+		<div>
+			<p class="flex items-center gap-2 text-sm font-semibold text-accent" data-reveal="up">
+				<GraduationCap size={17} aria-hidden="true" />
+				EPITECH — Pré-MSc, promo 2024
+			</p>
+			<p class="mt-4 text-base leading-relaxed text-ink-muted" data-reveal="up" data-reveal-delay="0.1">
+				Après un Bachelor en marketing digital et plusieurs expériences en SEO et
+				communication, j'ai choisi de passer de l'autre côté : construire moi-même les
+				produits. Aujourd'hui je développe des applications fullstack —
+				comme <a href="/projects/saturn" class="font-medium text-accent underline underline-offset-2">Saturn</a>,
+				ma messagerie temps réel — et je cherche une alternance pour progresser en équipe.
+			</p>
+
+			<dl class="mt-9 grid grid-cols-3 gap-4" data-reveal-stagger>
+				{
+					stats.map(({ value, label }) => (
+						<div class="card-premium p-4 text-center md:p-5">
+							<dt class="sr-only">{label}</dt>
+							<dd class="font-display text-gradient text-2xl font-bold md:text-3xl">{value}</dd>
+							<dd class="mt-1.5 text-[11px] leading-tight text-ink-faint md:text-xs">{label}</dd>
+						</div>
+					))
+				}
+			</dl>
+
+			<div class="mt-9" data-reveal="up">
+				<Button href="/about" variant="ghost">
+					Mon parcours complet
+					<ArrowRight size={15} class="transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
+				</Button>
+			</div>
+		</div>
+	</div>
+</section>

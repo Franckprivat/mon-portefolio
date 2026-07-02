@@ -1,0 +1,50 @@
+---
+title: 'Pourquoi Astro pour mon portfolio (et pas Next.js)'
+description: "J'utilise Next.js sur mes projets applicatifs, mais pour un portfolio, Astro gagne : zéro JavaScript par défaut, Content Collections et un score Lighthouse presque gratuit."
+cover: '../../assets/blog-placeholder-3.jpg'
+tags: ['Astro', 'Performance', 'Frontend']
+pubDate: 2026-06-28
+---
+
+## Le bon outil pour le bon site
+
+Saturn est une application : état client complexe, temps réel, authentification — Next.js
+s'imposait. Mon portfolio, lui, est un site de **contenu** : des pages, des projets, des
+articles. Le choix d'Astro s'est fait naturellement.
+
+## Ce qui m'a convaincu
+
+### Zéro JavaScript par défaut
+
+Astro rend tout en HTML statique et n'envoie du JS que là où on le demande explicitement.
+Mes animations GSAP et ma palette de commandes sont les *seuls* scripts du site —
+pas de runtime de framework à télécharger.
+
+### Les Content Collections
+
+Mes projets et mes articles sont des fichiers MDX validés par un schéma Zod :
+
+```ts
+const projects = defineCollection({
+	loader: glob({ base: './src/content/projects', pattern: '**/*.mdx' }),
+	schema: ({ image }) =>
+		z.object({
+			title: z.string(),
+			cover: image(),
+			tech: z.array(z.string()),
+		}),
+});
+```
+
+Ajouter un projet = créer un fichier. Le typage TypeScript suit tout seul, et une
+frontmatter invalide casse le build au lieu de casser la prod.
+
+### L'optimisation d'images intégrée
+
+`<Image />` redimensionne, convertit en WebP et génère les `srcset` au build.
+Le lazy loading est le comportement par défaut.
+
+## Le résultat
+
+Un site entièrement animé — smooth scroll, révélations GSAP, curseur personnalisé —
+qui reste léger, parce que chaque kilo-octet de JavaScript a été choisi.

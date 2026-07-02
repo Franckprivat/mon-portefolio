@@ -1,0 +1,165 @@
+---
+/**
+ * Formulaire de contact.
+ * - validation côté client (requis, format email) avec messages sous les champs
+ * - champ honeypot anti-spam
+ * - envoi : POST vers PUBLIC_FORM_ENDPOINT si configuré (Formspree, Resend,
+ *   EmailJS…), sinon repli sur mailto: prérempli — le message part toujours.
+ * - écran de succès animé
+ */
+import { CheckCircle2, Send } from '@lucide/astro';
+import { CONTACT } from '../../consts';
+import Button from '../ui/Button.astro';
+
+// À définir dans .env pour brancher un vrai service d'envoi plus tard.
+const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
+
+const fields = [
+	{ id: 'name', label: 'Nom', type: 'text', autocomplete: 'name' },
+	{ id: 'email', label: 'Email', type: 'email', autocomplete: 'email' },
+	{ id: 'subject', label: 'Sujet', type: 'text', autocomplete: 'off' },
+] as const;
+---
+
+<div class="card-premium relative overflow-hidden p-8 md:p-10" data-reveal="up">
+	<form id="contact-form" method="post" novalidate data-endpoint={endpoint} data-email={CONTACT.email}>
+		<div class="grid gap-6 sm:grid-cols-2">
+			{
+				fields.map(({ id, label, type, autocomplete }) => (
+					<div class={id === 'subject' ? 'sm:col-span-2' : ''}>
+						<label for={id} class="mb-2 block text-sm font-medium text-ink">
+							{label} <span class="text-accent">*</span>
+						</label>
+						<input
+							id={id}
+							name={id}
+							type={type}
+							autocomplete={autocomplete}
+							required
+							class="w-full rounded-xl border border-line bg-bg-soft/60 px-4 py-3 text-sm text-ink transition-all duration-300 outline-none placeholder:text-ink-faint focus:border-accent focus:shadow-[0_0_0_4px_var(--accent-soft)]"
+							placeholder={label}
+							aria-describedby={`${id}-error`}
+						/>
+						<p id={`${id}-error`} class="mt-1.5 hidden text-xs text-red-400" role="alert" />
+					</div>
+				))
+			}
+
+			<div class="sm:col-span-2">
+				<label for="message" class="mb-2 block text-sm font-medium text-ink">
+					Message <span class="text-accent">*</span>
+				</label>
+				<textarea
+					id="message"
+					name="message"
+					rows="6"
+					required
+					class="w-full resize-y rounded-xl border border-line bg-bg-soft/60 px-4 py-3 text-sm text-ink transition-all duration-300 outline-none placeholder:text-ink-faint focus:border-accent focus:shadow-[0_0_0_4px_var(--accent-soft)]"
+					placeholder="Parlez-moi de votre projet…"
+					aria-describedby="message-error"></textarea>
+				<p id="message-error" class="mt-1.5 hidden text-xs text-red-400" role="alert"></p>
+			</div>
+		</div>
+
+		<!-- Honeypot : invisible pour les humains, rempli par les bots -->
+		<input
+			type="text"
+			name="company"
+			tabindex="-1"
+			autocomplete="off"
+			class="absolute -left-[9999px]"
+			aria-hidden="true"
+		/>
+
+		<div class="mt-8">
+			<Button type="submit" class="w-full sm:w-auto">
+				<Send size={15} aria-hidden="true" />
+				Envoyer le message
+			</Button>
+		</div>
+	</form>
+
+	<!-- Écran de succès -->
+	<div
+		id="form-success"
+		class="pointer-events-none absolute inset-0 flex scale-95 flex-col items-center justify-center gap-4 bg-surface-solid opacity-0 transition-all duration-500 [&.is-visible]:pointer-events-auto [&.is-visible]:scale-100 [&.is-visible]:opacity-100"
+		role="status"
+		aria-live="polite"
+	>
+		<span class="grid size-16 place-items-center rounded-full bg-emerald-400/15 text-emerald-400">
+			<CheckCircle2 size={32} aria-hidden="true" />
+		</span>
+		<p class="font-display text-xl font-semibold text-ink">Message envoyé !</p>
+		<p class="max-w-xs text-center text-sm text-ink-muted">
+			Merci pour votre message — je reviens vers vous très vite.
+		</p>
+	</div>
+</div>
+
+<script>
+	function bindForm(): void {
+		const form = document.getElementById('contact-form') as HTMLFormElement | null;
+		if (!form || form.dataset.bound) return;
+		form.dataset.bound = 'true';
+
+		const showError = (id: string, message: string) => {
+			const field = document.getElementById(id);
+			const error = document.getElementById(`${id}-error`);
+			if (!field || !error) return;
+			error.textContent = message;
+			error.classList.toggle('hidden', !message);
+			field.classList.toggle('border-red-400', !!message);
+			field.setAttribute('aria-invalid', message ? 'true' : 'false');
+		};
+
+		const validate = (): boolean => {
+			let ok = true;
+			for (const id of ['name', 'email', 'subject', 'message']) {
+				const field = document.getElementById(id) as HTMLInputElement | HTMLTextAreaElement;
+				const value = field.value.trim();
+				if (!value) {
+					showError(id, 'Ce champ est requis.');
+					ok = false;
+				} else if (id === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+					showError(id, 'Adresse email invalide.');
+					ok = false;
+				} else {
+					showError(id, '');
+				}
+			}
+			return ok;
+		};
+
+		form.addEventListener('submit', async (e) => {
+			e.preventDefault();
+			if (!validate()) return;
+
+			const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
+			if (data.company) return; // honeypot rempli → bot, on ignore
+
+			const endpoint = form.dataset.endpoint;
+			if (endpoint) {
+				try {
+					const res = await fetch(endpoint, {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+						body: JSON.stringify(data),
+					});
+					if (!res.ok) throw new Error(`HTTP ${res.status}`);
+				} catch {
+					showError('message', "L'envoi a échoué — réessayez ou écrivez-moi directement par email.");
+					return;
+				}
+			} else {
+				// Pas de service configuré : on ouvre le client mail prérempli.
+				const body = encodeURIComponent(`${data.message}\n\n— ${data.name} (${data.email})`);
+				window.location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent(data.subject)}&body=${body}`;
+			}
+
+			document.getElementById('form-success')?.classList.add('is-visible');
+			form.reset();
+		});
+	}
+
+	document.addEventListener('astro:page-load', bindForm);
+</script>

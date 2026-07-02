@@ -1,0 +1,52 @@
+---
+/**
+ * Bascule clair / sombre.
+ * - préférence enregistrée dans localStorage('theme')
+ * - suit le système par défaut (voir script anti-FOUC dans BaseLayout)
+ * - ré-applique le thème après chaque navigation (View Transitions)
+ */
+import { Moon, Sun } from '@lucide/astro';
+---
+
+<button
+	id="theme-toggle"
+	type="button"
+	class="glass relative grid size-10 place-items-center rounded-full text-ink-muted transition-colors hover:text-ink"
+	aria-label="Basculer entre le thème clair et sombre"
+	data-cursor
+>
+	<Sun size={18} class="absolute scale-0 rotate-90 transition-all duration-400 dark:scale-100 dark:rotate-0" />
+	<Moon size={18} class="absolute scale-100 rotate-0 transition-all duration-400 dark:scale-0 dark:-rotate-90" />
+</button>
+
+<script>
+	type Theme = 'dark' | 'light';
+
+	function apply(theme: Theme): void {
+		document.documentElement.classList.toggle('dark', theme === 'dark');
+	}
+
+	function stored(): Theme {
+		const saved = localStorage.getItem('theme');
+		if (saved === 'dark' || saved === 'light') return saved;
+		return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+	}
+
+	// Délégation : le bouton est re-rendu à chaque page, pas le listener.
+	document.addEventListener('click', (e) => {
+		if (!(e.target as HTMLElement).closest('#theme-toggle')) return;
+		const next: Theme = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+		localStorage.setItem('theme', next);
+		apply(next);
+	});
+
+	// Le swap de page réinitialise <html> — on ré-applique le thème choisi.
+	document.addEventListener('astro:after-swap', () => apply(stored()));
+
+	// Si l'utilisateur n'a rien choisi, on suit les changements du système.
+	window
+		.matchMedia('(prefers-color-scheme: light)')
+		.addEventListener('change', () => {
+			if (!localStorage.getItem('theme')) apply(stored());
+		});
+</script>

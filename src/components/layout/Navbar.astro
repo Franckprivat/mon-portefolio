@@ -1,0 +1,141 @@
+---
+/**
+ * Barre de navigation fixe.
+ * - devient « verre dépoli » et se compacte au scroll (classe .nav-scrolled via app.ts)
+ * - lien actif souligné, menu mobile plein écran animé
+ */
+import { Command, Menu, X } from '@lucide/astro';
+import { NAV_LINKS, SITE } from '../../consts';
+import ThemeToggle from '../ui/ThemeToggle.astro';
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+
+<header
+	id="site-nav"
+	class="fixed inset-x-0 top-0 z-50 transition-all duration-500 [&.nav-scrolled]:py-0"
+>
+	<div
+		class="mx-auto mt-3 flex max-w-6xl items-center justify-between rounded-2xl px-4 py-3 transition-all duration-500 sm:px-6 [#site-nav.nav-scrolled_&]:glass [#site-nav.nav-scrolled_&]:mt-2 [#site-nav.nav-scrolled_&]:py-2 [#site-nav.nav-scrolled_&]:shadow-lg [#site-nav.nav-scrolled_&]:shadow-black/5"
+	>
+		<!-- Logo -->
+		<a
+			href="/"
+			class="font-display text-lg font-bold tracking-tight text-ink"
+			aria-label={`${SITE.name} — accueil`}
+			data-magnetic="0.2"
+		>
+			franck<span class="text-gradient">.k</span>
+		</a>
+
+		<!-- Liens desktop -->
+		<nav aria-label="Navigation principale" class="hidden md:block">
+			<ul class="flex items-center gap-1">
+				{
+					NAV_LINKS.map(({ label, href }) => (
+						<li>
+							<a
+								href={href}
+								class={`relative rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300 hover:text-ink ${
+									isActive(href) ? 'text-ink' : 'text-ink-muted'
+								}`}
+								aria-current={isActive(href) ? 'page' : undefined}
+							>
+								{label}
+								{isActive(href) && (
+									<span
+										class="absolute inset-x-4 -bottom-0.5 h-px bg-linear-to-r from-accent to-accent-2"
+										aria-hidden="true"
+									/>
+								)}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+
+		<div class="flex items-center gap-2">
+			<!-- Palette de commandes -->
+			<button
+				type="button"
+				class="glass hidden items-center gap-2 rounded-full px-3 py-2 text-xs font-medium text-ink-muted transition-colors hover:text-ink sm:inline-flex"
+				data-palette-open
+				aria-label="Ouvrir la palette de commandes"
+			>
+				<Command size={13} aria-hidden="true" />
+				<span>K</span>
+			</button>
+
+			<ThemeToggle />
+
+			<!-- Burger mobile -->
+			<button
+				type="button"
+				id="menu-toggle"
+				class="glass grid size-10 place-items-center rounded-full text-ink md:hidden"
+				aria-label="Ouvrir le menu"
+				aria-expanded="false"
+				aria-controls="mobile-menu"
+			>
+				<Menu size={20} class="[#menu-toggle[aria-expanded='true']_&]:hidden" />
+				<X size={20} class="hidden [#menu-toggle[aria-expanded='true']_&]:block" />
+			</button>
+		</div>
+	</div>
+
+	<!-- Menu mobile plein écran -->
+	<div
+		id="mobile-menu"
+		class="pointer-events-none fixed inset-0 -z-10 flex flex-col justify-center bg-bg/95 px-8 opacity-0 backdrop-blur-xl transition-opacity duration-400 md:hidden [&.is-open]:pointer-events-auto [&.is-open]:opacity-100"
+	>
+		<nav aria-label="Navigation mobile">
+			<ul class="space-y-2">
+				{
+					NAV_LINKS.map(({ label, href }, i) => (
+						<li
+							class="translate-y-6 opacity-0 transition-all duration-500 [#mobile-menu.is-open_&]:translate-y-0 [#mobile-menu.is-open_&]:opacity-100"
+							style={`transition-delay: ${80 + i * 60}ms`}
+						>
+							<a
+								href={href}
+								class={`font-display block py-3 text-4xl font-bold tracking-tight transition-colors ${
+									isActive(href) ? 'text-gradient' : 'text-ink hover:text-accent'
+								}`}
+								aria-current={isActive(href) ? 'page' : undefined}
+							>
+								{label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+	</div>
+</header>
+
+<script>
+	// Menu mobile : re-branché à chaque navigation (les éléments sont recréés).
+	function bindMenu(): void {
+		const toggle = document.getElementById('menu-toggle');
+		const menu = document.getElementById('mobile-menu');
+		if (!toggle || !menu) return;
+
+		const setOpen = (open: boolean) => {
+			menu.classList.toggle('is-open', open);
+			toggle.setAttribute('aria-expanded', String(open));
+			toggle.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+			document.body.style.overflow = open ? 'hidden' : '';
+		};
+
+		toggle.addEventListener('click', () =>
+			setOpen(!menu.classList.contains('is-open'))
+		);
+		menu.querySelectorAll('a').forEach((a) =>
+			a.addEventListener('click', () => setOpen(false))
+		);
+	}
+
+	document.addEventListener('astro:page-load', bindMenu);
+</script>

@@ -1,0 +1,47 @@
+---
+/**
+ * Bouton premium réutilisable.
+ * - `href` → rend un lien, sinon un <button>
+ * - `variant` : primary (dégradé lumineux) | ghost (verre dépoli)
+ * - magnétique par défaut (suit légèrement la souris, géré par app.ts)
+ */
+interface Props {
+	href?: string;
+	variant?: 'primary' | 'ghost';
+	type?: 'button' | 'submit';
+	magnetic?: boolean;
+	class?: string;
+	[key: string]: unknown;
+}
+
+const {
+	href,
+	variant = 'primary',
+	type = 'button',
+	magnetic = true,
+	class: className = '',
+	...rest
+} = Astro.props;
+
+const base =
+	'group relative inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold tracking-wide transition-all duration-300 will-change-transform';
+
+const variants = {
+	primary:
+		'text-white bg-linear-120 from-accent to-accent-2 shadow-[0_8px_30px_-8px_var(--glow)] hover:shadow-[0_12px_40px_-6px_var(--glow)] hover:brightness-110',
+	ghost:
+		'glass text-ink hover:border-line-strong hover:bg-accent-soft',
+};
+
+const Tag = href ? 'a' : 'button';
+---
+
+<Tag
+	href={href}
+	type={href ? undefined : type}
+	class={`${base} ${variants[variant]} ${className}`}
+	data-magnetic={magnetic ? '0.3' : undefined}
+	{...rest}
+>
+	<slot />
+</Tag>

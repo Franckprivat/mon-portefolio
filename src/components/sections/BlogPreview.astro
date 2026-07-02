@@ -1,0 +1,33 @@
+---
+/**
+ * Derniers articles du blog sur l'accueil (3 max, hors brouillons).
+ */
+import { getCollection } from 'astro:content';
+import { ArrowRight } from '@lucide/astro';
+import BlogCard from '../ui/BlogCard.astro';
+import Button from '../ui/Button.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.slice(0, 3);
+---
+
+<section id="blog" class="mx-auto max-w-6xl scroll-mt-24 px-6 py-24 md:py-32">
+	<SectionHeading
+		eyebrow="Blog"
+		title="Carnet de bord"
+		description="Ce que j'apprends en construisant : retours d'expérience techniques et réflexions de reconversion."
+	/>
+
+	<div class="grid gap-7 md:grid-cols-3" data-reveal-stagger>
+		{posts.map((post) => <BlogCard post={post} />)}
+	</div>
+
+	<div class="mt-12 text-center" data-reveal="up">
+		<Button href="/blog" variant="ghost">
+			Tous les articles
+			<ArrowRight size={15} class="transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
+		</Button>
+	</div>
+</section>

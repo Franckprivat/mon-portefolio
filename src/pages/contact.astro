@@ -1,0 +1,88 @@
+---
+/**
+ * Page contact : formulaire validé + coordonnées directes.
+ */
+import { Mail, MapPin } from '@lucide/astro';
+import ContactForm from '../components/sections/ContactForm.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import SocialIcon from '../components/ui/SocialIcon.astro';
+import { CONTACT } from '../consts';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const channels = [
+	{
+		label: 'Email',
+		value: CONTACT.email,
+		href: `mailto:${CONTACT.email}`,
+		Icon: Mail,
+	},
+	{
+		label: 'GitHub',
+		value: '@Franck300302',
+		href: CONTACT.github,
+		brand: 'github' as const,
+	},
+	{
+		label: 'LinkedIn',
+		value: 'Franck Kiemdé',
+		href: CONTACT.linkedin,
+		brand: 'linkedin' as const,
+	},
+];
+---
+
+<BaseLayout
+	title="Contact — Franck Kiemdé"
+	description="Contactez Franck Kiemdé : alternance, projet web ou simple question. Réponse rapide garantie."
+>
+	<section class="mx-auto max-w-6xl px-6 pt-36 pb-24">
+		<SectionHeading
+			eyebrow="Contact"
+			title="Travaillons ensemble"
+			description="Alternance, projet, question technique — ma boîte mail est ouverte et je réponds vite."
+		/>
+
+		<div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
+			<!-- Coordonnées -->
+			<div class="space-y-4" data-reveal-stagger>
+				{
+					channels.map(({ label, value, href, Icon, brand }) => (
+						<a
+							href={href}
+							target={href.startsWith('http') ? '_blank' : undefined}
+							rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+							class="card-premium group flex items-center gap-4 p-5 hover:-translate-y-1 hover:border-line-strong"
+						>
+							<span class="grid size-11 shrink-0 place-items-center rounded-xl bg-accent-soft text-accent transition-transform duration-300 group-hover:scale-110">
+								{brand ? <SocialIcon name={brand} size={19} /> : Icon && <Icon size={19} aria-hidden="true" />}
+							</span>
+							<span>
+								<span class="block text-xs font-semibold tracking-wider text-ink-faint uppercase">
+									{label}
+								</span>
+								<span class="mt-0.5 block text-sm font-medium text-ink transition-colors group-hover:text-accent">
+									{value}
+								</span>
+							</span>
+						</a>
+					))
+				}
+
+				<div class="card-premium flex items-center gap-4 p-5">
+					<span class="grid size-11 shrink-0 place-items-center rounded-xl bg-accent-soft text-accent">
+						<MapPin size={19} aria-hidden="true" />
+					</span>
+					<span>
+						<span class="block text-xs font-semibold tracking-wider text-ink-faint uppercase">
+							Localisation
+						</span>
+						<span class="mt-0.5 block text-sm font-medium text-ink">France · télétravail OK</span>
+					</span>
+				</div>
+			</div>
+
+			<!-- Formulaire -->
+			<ContactForm />
+		</div>
+	</section>
+</BaseLayout>

@@ -1,0 +1,44 @@
+---
+/**
+ * Bannière d'appel à l'action en bas de l'accueil.
+ */
+import { ArrowRight, Mail } from '@lucide/astro';
+import { CONTACT } from '../../consts';
+import Button from '../ui/Button.astro';
+---
+
+<section class="mx-auto max-w-6xl px-6 pb-24 md:pb-32">
+	<div
+		class="card-premium relative overflow-hidden px-8 py-16 text-center md:py-20"
+		data-reveal="zoom"
+	>
+		<!-- Halos décoratifs -->
+		<div
+			class="absolute -top-24 left-1/2 size-72 -translate-x-1/2 rounded-full bg-accent/25 blur-[90px]"
+			aria-hidden="true"
+		>
+		</div>
+
+		<p class="text-xs font-semibold tracking-[0.2em] text-accent uppercase">Contact</p>
+		<h2
+			class="font-display mx-auto mt-4 max-w-2xl text-3xl font-bold tracking-tight text-ink sm:text-4xl md:text-5xl"
+			data-split
+		>
+			Un projet, une alternance, une question ?
+		</h2>
+		<p class="mx-auto mt-5 max-w-xl text-ink-muted">
+			Je réponds vite. Parlons de ce qu'on peut construire ensemble.
+		</p>
+
+		<div class="mt-9 flex flex-wrap items-center justify-center gap-4">
+			<Button href="/contact">
+				Me contacter
+				<ArrowRight size={16} class="transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
+			</Button>
+			<Button href={`mailto:${CONTACT.email}`} variant="ghost">
+				<Mail size={16} aria-hidden="true" />
+				{CONTACT.email}
+			</Button>
+		</div>
+	</div>
+</section>

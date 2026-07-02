@@ -1,0 +1,143 @@
+---
+/**
+ * Layout racine : <head> SEO complet, thème, transitions de pages,
+ * et les éléments globaux (navbar, footer, curseur, palette, fond animé…).
+ */
+import { ClientRouter } from 'astro:transitions';
+import { getCollection } from 'astro:content';
+import '../styles/global.css';
+import { CONTACT, SITE } from '../consts';
+import AnimatedBackground from '../components/layout/AnimatedBackground.astro';
+import CommandPalette from '../components/layout/CommandPalette.astro';
+import Cursor from '../components/layout/Cursor.astro';
+import Footer from '../components/layout/Footer.astro';
+import Loader from '../components/layout/Loader.astro';
+import Navbar from '../components/layout/Navbar.astro';
+import ScrollTop from '../components/layout/ScrollTop.astro';
+
+interface Props {
+	title: string;
+	description?: string;
+	/** Image OpenGraph absolue ou relative au site (par défaut : /og.png). */
+	ogImage?: string;
+	type?: 'website' | 'article';
+}
+
+const {
+	title,
+	description = SITE.description,
+	ogImage = '/og.png',
+	type = 'website',
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImageUrl = new URL(ogImage, Astro.site);
+
+// Projets pour la recherche de la palette de commandes.
+const projects = (await getCollection('projects')).map((p) => ({
+	label: p.data.title,
+	href: `/projects/${p.id}`,
+	hint: p.data.tech.slice(0, 3).join(' · '),
+}));
+
+// Données structurées schema.org : la personne + le site.
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Person',
+			name: SITE.name,
+			jobTitle: SITE.role,
+			email: `mailto:${CONTACT.email}`,
+			url: Astro.site?.href,
+			sameAs: [CONTACT.github, CONTACT.linkedin],
+		},
+		{
+			'@type': 'WebSite',
+			name: SITE.title,
+			url: Astro.site?.href,
+			inLanguage: SITE.lang,
+		},
+	],
+};
+---
+
+<!doctype html>
+<html lang={SITE.lang} class="scroll-pt-24">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="generator" content={Astro.generator} />
+
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonical} />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" href="/sitemap-index.xml" />
+		<meta name="theme-color" content="#131120" />
+
+		<!-- OpenGraph -->
+		<meta property="og:type" content={type} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={ogImageUrl} />
+		<meta property="og:locale" content={SITE.locale} />
+		<meta property="og:site_name" content={SITE.name} />
+
+		<!-- Twitter Cards -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImageUrl} />
+
+		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
+
+		<!-- Anti-FOUC : applique le thème avant le premier rendu.
+		     Préférence enregistrée > système > sombre (thème principal). -->
+		<script is:inline>
+			(function () {
+				var saved = localStorage.getItem('theme');
+				var theme =
+					saved === 'dark' || saved === 'light'
+						? saved
+						: window.matchMedia('(prefers-color-scheme: light)').matches
+							? 'light'
+							: 'dark';
+				document.documentElement.classList.toggle('dark', theme === 'dark');
+				document.documentElement.classList.add('js');
+			})();
+		</script>
+
+		<ClientRouter />
+	</head>
+
+	<body class="min-h-dvh">
+		<Loader />
+		<AnimatedBackground />
+		<Cursor />
+
+		<a
+			href="#main"
+			class="sr-only z-[120] rounded-md bg-accent px-4 py-2 text-white focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+		>
+			Aller au contenu
+		</a>
+
+		<Navbar />
+
+		<main id="main" transition:animate="fade">
+			<slot />
+		</main>
+
+		<Footer />
+		<ScrollTop />
+		<CommandPalette projects={projects} />
+
+		<div class="noise-overlay" aria-hidden="true"></div>
+
+		<script>
+			import '../scripts/app.ts';
+		</script>
+	</body>
+</html>

@@ -1,0 +1,109 @@
+---
+/**
+ * Carte projet : image avec zoom au survol, halo lumineux qui suit la souris,
+ * légère rotation 3D, badges et liens GitHub / démo.
+ * Utilisée sur l'accueil (featured) et la page /projects (avec filtres).
+ */
+import { Image } from 'astro:assets';
+import { ArrowUpRight, ExternalLink } from '@lucide/astro';
+import type { CollectionEntry } from 'astro:content';
+import Badge from './Badge.astro';
+import SocialIcon from './SocialIcon.astro';
+import { slugify } from '../../lib/utils';
+
+interface Props {
+	project: CollectionEntry<'projects'>;
+	/** Priorité de chargement de l'image (true pour les cartes au-dessus de la ligne de flottaison). */
+	eager?: boolean;
+}
+
+const { project, eager = false } = Astro.props;
+const { title, description, cover, tech, badges, github, demo } = project.data;
+const url = `/projects/${project.id}`;
+---
+
+<article
+	class="card-premium group flex h-full flex-col overflow-hidden hover:-translate-y-2 hover:border-line-strong"
+	data-tilt
+	data-tech={tech.map(slugify).join(' ')}
+>
+	<!-- Couverture -->
+	<a href={url} class="relative block overflow-hidden" tabindex="-1" aria-hidden="true">
+		<Image
+			src={cover}
+			alt=""
+			width={640}
+			height={400}
+			loading={eager ? 'eager' : 'lazy'}
+			class="aspect-[16/10] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+		/>
+		<!-- Voile lumineux au survol -->
+		<div
+			class="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+			aria-hidden="true"
+		>
+		</div>
+		{
+			badges.length > 0 && (
+				<div class="absolute top-3 right-3 flex gap-2">
+					{badges.map((b) => (
+						<Badge tone="accent">{b}</Badge>
+					))}
+				</div>
+			)
+		}
+	</a>
+
+	<div class="flex grow flex-col p-6">
+		<div class="flex items-start justify-between gap-3">
+			<h3 class="font-display text-lg font-semibold text-ink">
+				<a href={url} class="after:absolute after:inset-0" data-cursor>
+					{title}
+				</a>
+			</h3>
+			<ArrowUpRight
+				size={18}
+				class="mt-1 shrink-0 text-ink-faint transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent"
+				aria-hidden="true"
+			/>
+		</div>
+
+		<p class="mt-2 line-clamp-3 grow text-sm leading-relaxed text-ink-muted">
+			{description}
+		</p>
+
+		<div class="mt-4 flex flex-wrap gap-1.5">
+			{tech.slice(0, 5).map((t) => <Badge>{t}</Badge>)}
+			{tech.length > 5 && <Badge>+{tech.length - 5}</Badge>}
+		</div>
+
+		{
+			(github || demo) && (
+				<div class="relative z-10 mt-5 flex gap-4 border-t border-line pt-4 text-xs font-medium">
+					{github && (
+						<a
+							href={github}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="inline-flex items-center gap-1.5 text-ink-muted transition-colors hover:text-accent"
+						>
+							<SocialIcon name="github" size={14} />
+							GitHub
+						</a>
+					)}
+					{demo && (
+						<a
+							href={demo}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="inline-flex items-center gap-1.5 text-ink-muted transition-colors hover:text-accent"
+						>
+							<ExternalLink size={14} aria-hidden="true" />
+							Démo
+						</a>
+					)}
+				</div>
+			)
+		}
+	</div>
+</article>

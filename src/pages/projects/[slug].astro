@@ -1,0 +1,112 @@
+---
+/**
+ * Page de détail d'un projet : couverture, métadonnées, contenu MDX,
+ * et navigation vers le projet suivant.
+ */
+import { Image } from 'astro:assets';
+import { render, getCollection } from 'astro:content';
+import { ArrowLeft, ArrowRight, ExternalLink } from '@lucide/astro';
+import Badge from '../../components/ui/Badge.astro';
+import Button from '../../components/ui/Button.astro';
+import SocialIcon from '../../components/ui/SocialIcon.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+	const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+	return projects.map((project, i) => ({
+		params: { slug: project.id },
+		props: { project, next: projects[(i + 1) % projects.length] },
+	}));
+}
+
+const { project, next } = Astro.props;
+const { title, description, cover, tech, badges, github, demo } = project.data;
+const { Content } = await render(project);
+---
+
+<BaseLayout title={`${title} — Franck Kiemdé`} description={description} type="article">
+	<article class="mx-auto max-w-4xl px-6 pt-36 pb-24">
+		<a
+			href="/projects"
+			class="mb-10 inline-flex items-center gap-2 text-sm font-medium text-ink-muted transition-colors hover:text-accent"
+			data-reveal="fade"
+		>
+			<ArrowLeft size={15} aria-hidden="true" />
+			Tous les projets
+		</a>
+
+		<header>
+			<div class="flex flex-wrap gap-2" data-reveal="up">
+				{badges.map((b) => <Badge tone="accent">{b}</Badge>)}
+			</div>
+			<h1
+				class="font-display mt-4 text-4xl font-bold tracking-tight text-ink sm:text-5xl"
+				data-split
+			>
+				{title}
+			</h1>
+			<p class="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted" data-reveal="up" data-reveal-delay="0.15">
+				{description}
+			</p>
+
+			<div class="mt-7 flex flex-wrap items-center gap-4" data-reveal="up" data-reveal-delay="0.25">
+				{
+					github && (
+						<Button href={github} variant="ghost" target="_blank" rel="noopener noreferrer">
+							<SocialIcon name="github" size={16} />
+							Code source
+						</Button>
+					)
+				}
+				{
+					demo && (
+						<Button href={demo} target="_blank" rel="noopener noreferrer">
+							<ExternalLink size={16} aria-hidden="true" />
+							Voir la démo
+						</Button>
+					)
+				}
+			</div>
+		</header>
+
+		<div class="card-premium mt-12 overflow-hidden p-2" data-reveal="zoom">
+			<Image
+				src={cover}
+				alt={`Aperçu du projet ${title}`}
+				width={1200}
+				class="w-full rounded-xl object-cover"
+				loading="eager"
+				transition:name={`cover-${project.id}`}
+			/>
+		</div>
+
+		<div class="mt-8 flex flex-wrap gap-2" data-reveal="up">
+			{tech.map((t) => <Badge>{t}</Badge>)}
+		</div>
+
+		<div class="prose-content mt-12" data-reveal="up">
+			<Content />
+		</div>
+
+		<!-- Projet suivant -->
+		<a
+			href={`/projects/${next.id}`}
+			class="card-premium group mt-20 flex items-center justify-between p-7 hover:-translate-y-1 hover:border-line-strong"
+			data-reveal="up"
+		>
+			<div>
+				<p class="text-xs font-semibold tracking-[0.2em] text-ink-faint uppercase">
+					Projet suivant
+				</p>
+				<p class="font-display mt-2 text-xl font-semibold text-ink transition-colors group-hover:text-accent">
+					{next.data.title}
+				</p>
+			</div>
+			<ArrowRight
+				size={22}
+				class="text-ink-faint transition-all duration-300 group-hover:translate-x-1.5 group-hover:text-accent"
+				aria-hidden="true"
+			/>
+		</a>
+	</article>
+</BaseLayout>

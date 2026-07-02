@@ -1,0 +1,27 @@
+---
+title: 'Portfolio'
+description: "Ce site : un portfolio animé construit avec Astro, Tailwind CSS et GSAP — smooth scrolling, palette de commandes, thème clair/sombre et contenu géré en MDX."
+cover: '../../assets/covers/portfolio.svg'
+tech: ['Astro', 'TypeScript', 'Tailwind CSS', 'GSAP', 'MDX']
+badges: ['Frontend', 'Design']
+featured: true
+order: 2
+date: 2026-07-02
+---
+
+## Le projet
+
+Ce portfolio est lui-même un projet : je voulais un site rapide comme une page statique,
+mais vivant comme une application moderne.
+
+## Choix techniques
+
+- **Astro** pour le rendu statique et les Content Collections (projets et articles en MDX)
+- **Tailwind CSS v4** avec un design system en variables CSS — le thème clair/sombre bascule sans flash
+- **GSAP + ScrollTrigger** pour les révélations au scroll, et **Lenis** pour le smooth scrolling
+- **Zéro framework côté client** : les interactions (palette de commandes, curseur, filtres) sont en TypeScript vanilla
+
+## Détails auxquels je tiens
+
+Le score Lighthouse, l'accessibilité (navigation clavier, `prefers-reduced-motion` respecté),
+et une palette de commandes ouverte avec `Ctrl + K` pour naviguer et chercher les projets.

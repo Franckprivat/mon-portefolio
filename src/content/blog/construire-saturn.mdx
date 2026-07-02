@@ -1,0 +1,40 @@
+---
+title: 'Construire Saturn : ce que le temps réel m’a appris'
+description: "Chat, salons vocaux, appels vidéo en mesh WebRTC : les leçons techniques tirées de mon clone de Discord construit avec Next.js, NestJS et Socket.IO."
+cover: '../../assets/blog-placeholder-2.jpg'
+tags: ['WebRTC', 'NestJS', 'Socket.IO', 'Projet']
+pubDate: 2026-05-20
+---
+
+## Un clone de Discord, vraiment ?
+
+Saturn est né d'une question simple : *est-ce que je suis capable de construire une
+application de messagerie complète ?* Chat temps réel, communautés, salons vocaux,
+appels vidéo — le cahier des charges était ambitieux pour un étudiant en Pré-MSc.
+
+## Leçon 1 : le temps réel est un changement de paradigme
+
+Avec une API REST classique, le serveur répond quand on l'interroge. Avec Socket.IO,
+l'état vit des deux côtés à la fois :
+
+- Que se passe-t-il quand un client se **déconnecte** pendant qu'on lui envoie un message ?
+- Comment synchroniser les **accusés de lecture** entre trois appareils ?
+- Qui fait foi quand deux clients modifient la même chose ?
+
+J'ai appris à penser en événements plutôt qu'en requêtes, et à toujours prévoir la reconnexion.
+
+## Leçon 2 : WebRTC est puissant mais exigeant
+
+Pour les appels, j'ai choisi une topologie **mesh** : chaque participant envoie son flux
+à tous les autres. Simple à mettre en place, mais la signalisation (offres, réponses,
+candidats ICE) demande de la rigueur. Le debugging m'a fait comprendre en profondeur
+comment fonctionnent les connexions pair-à-pair.
+
+## Leçon 3 : l'infrastructure fait partie du produit
+
+Docker Compose pour orchestrer PostgreSQL, le backend NestJS et le frontend Next.js,
+Nginx en reverse proxy, Prisma pour les migrations : Saturn m'a forcé à sortir du code
+applicatif et à comprendre toute la chaîne.
+
+Le code est sur [GitHub](https://github.com/Franckprivat/Saturn), et la fiche projet
+détaillée est [ici](/projects/saturn).

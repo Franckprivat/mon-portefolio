@@ -1,0 +1,43 @@
+---
+/**
+ * Loader d'entrée : logo + barre de progression.
+ * Affiché uniquement à la première visite de la session, puis retiré du DOM.
+ */
+---
+
+<div
+	id="loader"
+	class="fixed inset-0 z-[110] flex flex-col items-center justify-center gap-6 bg-bg transition-[opacity,visibility] duration-700 [&.is-done]:invisible [&.is-done]:opacity-0"
+	aria-hidden="true"
+>
+	<p class="font-display text-3xl font-bold tracking-tight text-ink">
+		franck<span class="text-gradient">.k</span>
+	</p>
+	<div class="h-px w-40 overflow-hidden rounded-full bg-line-strong">
+		<div
+			id="loader-bar"
+			class="h-full w-full origin-left scale-x-0 bg-linear-to-r from-accent to-accent-2 transition-transform duration-[900ms] ease-out"
+		>
+		</div>
+	</div>
+</div>
+
+<script>
+	function runLoader(): void {
+		const loader = document.getElementById('loader');
+		if (!loader) return;
+
+		// Déjà visité pendant cette session (ou navigation SPA) → pas de loader.
+		if (sessionStorage.getItem('visited')) {
+			loader.remove();
+			return;
+		}
+		sessionStorage.setItem('visited', 'true');
+
+		document.getElementById('loader-bar')?.classList.add('scale-x-100');
+		setTimeout(() => loader.classList.add('is-done'), 1000);
+		setTimeout(() => loader.remove(), 1800);
+	}
+
+	document.addEventListener('astro:page-load', runLoader);
+</script>

@@ -1,0 +1,226 @@
+---
+/**
+ * Palette de commandes (Ctrl/Cmd + K).
+ * Navigation, recherche de projets et actions rapides — au clavier comme à la souris.
+ * Les données sont sérialisées dans un <script type="application/json">,
+ * le comportement vit dans le script client ci-dessous.
+ */
+import { Search } from '@lucide/astro';
+import { CONTACT, NAV_LINKS } from '../../consts';
+
+interface PaletteItem {
+	label: string;
+	hint?: string;
+	group: string;
+	href?: string;
+	action?: 'theme' | 'copy-email';
+}
+
+interface Props {
+	/** Projets injectés par le layout (titre + slug + technos pour la recherche). */
+	projects: { label: string; href: string; hint: string }[];
+}
+
+const { projects } = Astro.props;
+
+const items: PaletteItem[] = [
+	...NAV_LINKS.map(({ label, href }) => ({ label, href, group: 'Navigation' })),
+	...projects.map((p) => ({ ...p, group: 'Projets' })),
+	{ label: 'Changer de thème', group: 'Actions', action: 'theme' as const, hint: 'clair / sombre' },
+	{ label: "Copier l'email", group: 'Actions', action: 'copy-email' as const, hint: CONTACT.email },
+	{ label: 'Ouvrir GitHub', group: 'Actions', href: CONTACT.github, hint: 'nouvel onglet' },
+];
+---
+
+<div
+	id="palette"
+	class="fixed inset-0 z-[105] hidden items-start justify-center px-4 pt-[16vh]"
+	role="dialog"
+	aria-modal="true"
+	aria-label="Palette de commandes"
+>
+	<!-- Fond cliquable -->
+	<div id="palette-backdrop" class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+
+	<div
+		class="glass relative w-full max-w-xl scale-95 rounded-2xl opacity-0 shadow-2xl transition-all duration-200 [#palette.is-open_&]:scale-100 [#palette.is-open_&]:opacity-100"
+	>
+		<div class="flex items-center gap-3 border-b border-line px-5 py-4">
+			<Search size={18} class="shrink-0 text-ink-faint" aria-hidden="true" />
+			<input
+				id="palette-input"
+				type="text"
+				placeholder="Rechercher une page, un projet…"
+				class="w-full bg-transparent text-sm text-ink outline-none placeholder:text-ink-faint"
+				autocomplete="off"
+				spellcheck="false"
+				aria-label="Rechercher"
+			/>
+			<kbd class="rounded-md border border-line px-1.5 py-0.5 text-[10px] text-ink-faint">Échap</kbd>
+		</div>
+		<ul id="palette-list" class="max-h-72 overflow-y-auto p-2" role="listbox"></ul>
+	</div>
+</div>
+
+<script type="application/json" id="palette-data" set:html={JSON.stringify(items)} />
+
+<script>
+	import { navigate } from 'astro:transitions/client';
+
+	interface PaletteItem {
+		label: string;
+		hint?: string;
+		group: string;
+		href?: string;
+		action?: 'theme' | 'copy-email';
+	}
+
+	let selected = 0;
+	let filtered: PaletteItem[] = [];
+
+	const el = () => document.getElementById('palette');
+	const input = () => document.getElementById('palette-input') as HTMLInputElement | null;
+
+	function readItems(): PaletteItem[] {
+		try {
+			return JSON.parse(document.getElementById('palette-data')?.textContent ?? '[]');
+		} catch {
+			return [];
+		}
+	}
+
+	function open(): void {
+		const palette = el();
+		if (!palette) return;
+		palette.classList.remove('hidden');
+		palette.classList.add('flex');
+		requestAnimationFrame(() => palette.classList.add('is-open'));
+		const field = input();
+		if (field) {
+			field.value = '';
+			field.focus();
+		}
+		render('');
+	}
+
+	function close(): void {
+		const palette = el();
+		if (!palette) return;
+		palette.classList.remove('is-open');
+		setTimeout(() => {
+			palette.classList.add('hidden');
+			palette.classList.remove('flex');
+		}, 180);
+	}
+
+	function isOpen(): boolean {
+		return !!el() && !el()!.classList.contains('hidden');
+	}
+
+	function render(query: string): void {
+		const list = document.getElementById('palette-list');
+		if (!list) return;
+
+		const q = query.trim().toLowerCase();
+		filtered = readItems().filter(
+			(item) =>
+				!q ||
+				item.label.toLowerCase().includes(q) ||
+				(item.hint ?? '').toLowerCase().includes(q)
+		);
+		selected = 0;
+
+		if (filtered.length === 0) {
+			list.innerHTML =
+				'<li class="px-4 py-6 text-center text-sm text-ink-faint">Aucun résultat 🔍</li>';
+			return;
+		}
+
+		let html = '';
+		let lastGroup = '';
+		filtered.forEach((item, i) => {
+			if (item.group !== lastGroup) {
+				lastGroup = item.group;
+				html += `<li class="px-3 pt-3 pb-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-ink-faint" role="presentation">${item.group}</li>`;
+			}
+			html += `
+				<li role="option" aria-selected="${i === selected}" data-index="${i}"
+					class="palette-item flex cursor-pointer items-center justify-between rounded-xl px-3 py-2.5 text-sm ${i === selected ? 'bg-accent-soft text-ink' : 'text-ink-muted'}">
+					<span>${item.label}</span>
+					${item.hint ? `<span class="text-xs text-ink-faint">${item.hint}</span>` : ''}
+				</li>`;
+		});
+		list.innerHTML = html;
+
+		list.querySelectorAll<HTMLElement>('.palette-item').forEach((node) => {
+			node.addEventListener('click', () => execute(Number(node.dataset.index)));
+			node.addEventListener('mousemove', () => {
+				selected = Number(node.dataset.index);
+				highlight();
+			});
+		});
+	}
+
+	function highlight(): void {
+		document.querySelectorAll<HTMLElement>('.palette-item').forEach((node) => {
+			const active = Number(node.dataset.index) === selected;
+			node.classList.toggle('bg-accent-soft', active);
+			node.classList.toggle('text-ink', active);
+			node.classList.toggle('text-ink-muted', !active);
+			node.setAttribute('aria-selected', String(active));
+			if (active) node.scrollIntoView({ block: 'nearest' });
+		});
+	}
+
+	function execute(index: number): void {
+		const item = filtered[index];
+		if (!item) return;
+		close();
+
+		if (item.action === 'theme') {
+			(document.getElementById('theme-toggle') as HTMLButtonElement | null)?.click();
+		} else if (item.action === 'copy-email') {
+			navigator.clipboard?.writeText(item.hint ?? '');
+		} else if (item.href?.startsWith('http')) {
+			window.open(item.href, '_blank', 'noopener');
+		} else if (item.href) {
+			navigate(item.href);
+		}
+	}
+
+	// Raccourcis globaux — listeners uniques, survivent aux navigations.
+	document.addEventListener('keydown', (e) => {
+		if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+			e.preventDefault();
+			isOpen() ? close() : open();
+			return;
+		}
+		if (!isOpen()) return;
+
+		if (e.key === 'Escape') close();
+		else if (e.key === 'ArrowDown') {
+			e.preventDefault();
+			selected = Math.min(selected + 1, filtered.length - 1);
+			highlight();
+		} else if (e.key === 'ArrowUp') {
+			e.preventDefault();
+			selected = Math.max(selected - 1, 0);
+			highlight();
+		} else if (e.key === 'Enter') {
+			e.preventDefault();
+			execute(selected);
+		}
+	});
+
+	document.addEventListener('input', (e) => {
+		if ((e.target as HTMLElement).id === 'palette-input') {
+			render((e.target as HTMLInputElement).value);
+		}
+	});
+
+	document.addEventListener('click', (e) => {
+		const target = e.target as HTMLElement;
+		if (target.closest('[data-palette-open]')) open();
+		else if (target.id === 'palette-backdrop') close();
+	});
+</script>

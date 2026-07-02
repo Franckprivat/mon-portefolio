@@ -1,0 +1,73 @@
+---
+/**
+ * Page article : en-tête avec métadonnées (date, lecture, tags),
+ * couverture, contenu MDX stylé par .prose-content.
+ */
+import { Image } from 'astro:assets';
+import { render, getCollection } from 'astro:content';
+import { ArrowLeft, CalendarDays, Clock } from '@lucide/astro';
+import Badge from '../../components/ui/Badge.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatDate, readingTime } from '../../lib/utils';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('blog', ({ data }) => !data.draft);
+	return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { title, description, cover, tags, pubDate } = post.data;
+const minutes = readingTime(post.body ?? '');
+const { Content } = await render(post);
+---
+
+<BaseLayout title={`${title} — Blog de Franck Kiemdé`} description={description} type="article">
+	<article class="mx-auto max-w-3xl px-6 pt-36 pb-24">
+		<a
+			href="/blog"
+			class="mb-10 inline-flex items-center gap-2 text-sm font-medium text-ink-muted transition-colors hover:text-accent"
+			data-reveal="fade"
+		>
+			<ArrowLeft size={15} aria-hidden="true" />
+			Tous les articles
+		</a>
+
+		<header>
+			<div class="flex flex-wrap items-center gap-4 text-sm text-ink-faint" data-reveal="up">
+				<time datetime={pubDate.toISOString()} class="inline-flex items-center gap-1.5">
+					<CalendarDays size={14} aria-hidden="true" />
+					{formatDate(pubDate)}
+				</time>
+				<span class="inline-flex items-center gap-1.5">
+					<Clock size={14} aria-hidden="true" />
+					{minutes} min de lecture
+				</span>
+			</div>
+
+			<h1
+				class="font-display mt-4 text-3xl leading-tight font-bold tracking-tight text-ink sm:text-4xl md:text-5xl"
+				data-split
+			>
+				{title}
+			</h1>
+
+			<div class="mt-5 flex flex-wrap gap-2" data-reveal="up" data-reveal-delay="0.15">
+				{tags.map((t) => <Badge>{t}</Badge>)}
+			</div>
+		</header>
+
+		<div class="card-premium mt-10 overflow-hidden p-2" data-reveal="zoom">
+			<Image
+				src={cover}
+				alt=""
+				width={1200}
+				class="aspect-video w-full rounded-xl object-cover"
+				loading="eager"
+			/>
+		</div>
+
+		<div class="prose-content mt-12">
+			<Content />
+		</div>
+	</article>
+</BaseLayout>

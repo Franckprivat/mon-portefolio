@@ -1,62 +1,82 @@
-# Astro Starter Kit: Blog
+# Portfolio — Franck Kiemdé
+
+Portfolio personnel construit avec **Astro**, **Tailwind CSS v4** et **GSAP**.
+Site statique, très animé, pensé mobile-first, accessible et optimisé Lighthouse.
+
+**Démo :** https://franck-kiemde.dev *(à mettre à jour après déploiement)*
+
+## ✨ Fonctionnalités
+
+- **Design premium** : thème sombre par défaut, glassmorphism, dégradés subtils, grain de fond
+- **Animations** : smooth scrolling (Lenis), révélations au scroll et texte mot à mot (GSAP + ScrollTrigger), boutons magnétiques, parallaxe souris, tilt 3D des cartes, curseur personnalisé
+- **Mode clair / sombre** : suit le système, préférence enregistrée, zéro flash au chargement
+- **Palette de commandes** (`Ctrl/Cmd + K`) : navigation + recherche de projets + actions rapides
+- **Contenu en MDX** : projets et articles gérés par les Content Collections (schémas Zod typés)
+- **Filtre des projets** par technologie sur `/projects`
+- **SEO complet** : sitemap, robots.txt, OpenGraph, Twitter Cards, JSON-LD (schema.org), canonical
+- **Performance** : zéro framework JS client, images optimisées en WebP par Astro, lazy loading, polices auto-hébergées
+- **Accessibilité** : navigation clavier, `prefers-reduced-motion` respecté, ARIA sur les composants interactifs
+- **Bonus** : loader d'entrée, particules canvas, transitions de pages (View Transitions), bouton retour en haut, easter egg (↑↑↓↓←→←→BA 😉)
+
+## 🛠️ Stack
+
+| Rôle | Outil |
+| --- | --- |
+| Framework | [Astro 5](https://astro.build) (statique, Content Collections, View Transitions) |
+| Styles | [Tailwind CSS v4](https://tailwindcss.com) + design tokens en variables CSS |
+| Animations | [GSAP](https://gsap.com) + ScrollTrigger, [Lenis](https://lenis.darkroom.engineering) |
+| Icônes | [Lucide](https://lucide.dev) + [simple-icons](https://simpleicons.org) (logos de marques) |
+| Contenu | MDX validé par Zod |
+| Typo | Inter Variable + Space Grotesk Variable (auto-hébergées) |
+
+## 🚀 Démarrer
 
 ```sh
-npm create astro@latest -- --template blog
+npm install
+npm run dev      # http://localhost:4321
+npm run build    # build de production dans ./dist
+npm run preview  # prévisualiser le build
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-Features:
-
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
+## 📁 Structure
 
 ```text
-├── public/
-├── src/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
+src/
+├── assets/          # images (optimisées au build)
+├── components/
+│   ├── layout/      # navbar, footer, palette, curseur, loader…
+│   ├── sections/    # hero, à propos, compétences, timeline…
+│   └── ui/          # boutons, badges, cartes réutilisables
+├── content/
+│   ├── projects/    # 1 fichier MDX = 1 projet (+ page dédiée)
+│   └── blog/        # articles MDX
+├── data/            # compétences, expériences (typées)
+├── layouts/         # BaseLayout (SEO + éléments globaux)
+├── lib/             # utilitaires (dates, temps de lecture…)
+├── pages/           # routes du site
+├── scripts/         # app.ts : moteur d'animations GSAP/Lenis
+└── styles/          # global.css : design system Tailwind v4
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## ➕ Ajouter un projet ou un article
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+Créer un fichier `.mdx` dans `src/content/projects/` ou `src/content/blog/` :
+la carte, la page de détail et la recherche de la palette sont générées automatiquement.
+Le schéma de la frontmatter est défini (et validé) dans `src/content.config.ts`.
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
+## ✉️ Formulaire de contact
 
-Any static assets, like images, can be placed in the `public/` directory.
+Sans configuration, le formulaire ouvre le client mail (repli `mailto:`).
+Pour brancher un service d'envoi (Formspree, EmailJS, Resend via une function…),
+définir l'endpoint dans `.env` :
 
-## 🧞 Commands
+```sh
+PUBLIC_FORM_ENDPOINT="https://formspree.io/f/xxxxxxx"
+```
 
-All commands are run from the root of the project, from a terminal:
+## 📋 Avant de déployer
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+- [ ] Remplacer `site` dans `astro.config.mjs` par le vrai domaine (et dans `public/robots.txt`)
+- [ ] Vérifier l'URL LinkedIn dans `src/consts.ts`
+- [ ] Déposer le CV dans `public/cv-franck-kiemde.pdf`
+- [ ] (Optionnel) Configurer `PUBLIC_FORM_ENDPOINT`

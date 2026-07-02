@@ -1,0 +1,48 @@
+---
+/**
+ * Icône de technologie rendue statiquement depuis simple-icons (zéro JS client).
+ * `slug` = slug simple-icons ("react", "nodedotjs"…). Si null ou introuvable,
+ * on affiche une icône générique « code ».
+ */
+import { Braces } from '@lucide/astro';
+import * as icons from 'simple-icons';
+
+interface Props {
+	slug: string | null;
+	class?: string;
+	size?: number;
+}
+
+const { slug, class: className = '', size = 20 } = Astro.props;
+
+interface SimpleIcon {
+	path: string;
+	hex: string;
+	title: string;
+}
+
+function findIcon(s: string): SimpleIcon | null {
+	const key = `si${s.charAt(0).toUpperCase()}${s.slice(1)}`;
+	return (icons as unknown as Record<string, SimpleIcon>)[key] ?? null;
+}
+
+const icon = slug ? findIcon(slug) : null;
+---
+
+{
+	icon ? (
+		<svg
+			viewBox="0 0 24 24"
+			width={size}
+			height={size}
+			class={className}
+			style={`--brand: #${icon.hex}`}
+			fill="currentColor"
+			aria-hidden="true"
+		>
+			<path d={icon.path} />
+		</svg>
+	) : (
+		<Braces size={size} class={className} aria-hidden="true" />
+	)
+}

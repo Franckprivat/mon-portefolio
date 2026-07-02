@@ -1,0 +1,70 @@
+---
+/**
+ * Compétences : quatre cartes par catégorie, avec pour chaque techno
+ * son logo, et une jauge de niveau animée au scroll (data-bar → app.ts).
+ */
+import { Database, Monitor, Server, Wrench } from '@lucide/astro';
+import { skillCategories } from '../../data/skills';
+import SectionHeading from '../ui/SectionHeading.astro';
+import TechIcon from '../ui/TechIcon.astro';
+
+const lucideMap = { monitor: Monitor, server: Server, database: Database, wrench: Wrench };
+---
+
+<section id="competences" class="mx-auto max-w-6xl scroll-mt-24 px-6 py-24 md:py-32">
+	<SectionHeading
+		eyebrow="Compétences"
+		title="Ma boîte à outils"
+		description="Du composant React à la base de données : les technologies que je pratique au quotidien, en cours comme en projet perso."
+		align="center"
+	/>
+
+	<div class="grid gap-6 md:grid-cols-2" data-reveal-stagger>
+		{
+			skillCategories.map((category) => {
+				const CategoryIcon = lucideMap[category.lucide];
+				return (
+					<article class="card-premium p-7 hover:-translate-y-1 hover:border-line-strong">
+						<h3 class="font-display mb-6 flex items-center gap-3 text-lg font-semibold text-ink">
+							<span class="grid size-10 place-items-center rounded-xl bg-accent-soft text-accent">
+								<CategoryIcon size={19} aria-hidden="true" />
+							</span>
+							{category.title}
+						</h3>
+
+						<ul class="space-y-4">
+							{category.skills.map((skill) => (
+								<li class="group/skill">
+									<div class="mb-1.5 flex items-center justify-between">
+										<span class="flex items-center gap-2.5 text-sm font-medium text-ink">
+											<TechIcon
+												slug={skill.icon}
+												size={16}
+												class="text-ink-faint transition-colors duration-300 group-hover/skill:text-(--brand)"
+											/>
+											{skill.name}
+										</span>
+										<span class="text-xs tabular-nums text-ink-faint">{skill.level}%</span>
+									</div>
+									<div
+										class="h-1.5 overflow-hidden rounded-full bg-line-strong/60"
+										role="meter"
+										aria-valuenow={skill.level}
+										aria-valuemin="0"
+										aria-valuemax="100"
+										aria-label={`Niveau en ${skill.name}`}
+									>
+										<div
+											class="h-full rounded-full bg-linear-to-r from-accent to-accent-2"
+											data-bar={skill.level}
+										/>
+									</div>
+								</li>
+							))}
+						</ul>
+					</article>
+				);
+			})
+		}
+	</div>
+</section>

@@ -1,0 +1,13 @@
+---
+/** Bouton « retour en haut » — apparaît après 600px de scroll (voir app.ts). */
+import { ArrowUp } from '@lucide/astro';
+---
+
+<button
+	id="scroll-top"
+	type="button"
+	class="glass fixed right-5 bottom-5 z-40 grid size-11 translate-y-16 place-items-center rounded-full text-ink-muted opacity-0 shadow-lg transition-all duration-400 hover:text-accent [&.is-visible]:translate-y-0 [&.is-visible]:opacity-100"
+	aria-label="Revenir en haut de la page"
+>
+	<ArrowUp size={18} aria-hidden="true" />
+</button>

@@ -1,0 +1,33 @@
+---
+/**
+ * Projets mis en avant sur l'accueil (frontmatter `featured: true`),
+ * complétés par les plus récents pour remplir la grille.
+ */
+import { getCollection } from 'astro:content';
+import { ArrowRight } from '@lucide/astro';
+import Button from '../ui/Button.astro';
+import ProjectCard from '../ui/ProjectCard.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+
+const all = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const featured = [...all.filter((p) => p.data.featured), ...all.filter((p) => !p.data.featured)].slice(0, 4);
+---
+
+<section id="projets" class="mx-auto max-w-6xl scroll-mt-24 px-6 py-24 md:py-32">
+	<SectionHeading
+		eyebrow="Projets"
+		title="Sélection de travaux"
+		description="Du fullstack temps réel au branding : chaque projet raconte une étape de mon parcours."
+	/>
+
+	<div class="grid gap-7 sm:grid-cols-2" data-reveal-stagger>
+		{featured.map((project) => <ProjectCard project={project} />)}
+	</div>
+
+	<div class="mt-12 text-center" data-reveal="up">
+		<Button href="/projects" variant="ghost">
+			Tous les projets
+			<ArrowRight size={15} class="transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
+		</Button>
+	</div>
+</section>

@@ -1,0 +1,30 @@
+---
+/**
+ * Bandeau défilant des technologies — séparateur vivant entre deux sections.
+ * Dupliqué une fois pour un défilement infini sans rupture.
+ */
+import { skillCategories } from '../../data/skills';
+import TechIcon from '../ui/TechIcon.astro';
+
+const allSkills = skillCategories.flatMap((c) => c.skills);
+---
+
+<div
+	class="relative overflow-hidden border-y border-line py-5 [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]"
+	aria-hidden="true"
+>
+	<div class="flex w-max animate-marquee gap-10 motion-reduce:animate-none">
+		{
+			[0, 1].map(() => (
+				<ul class="flex shrink-0 items-center gap-10">
+					{allSkills.map((skill) => (
+						<li class="flex items-center gap-2.5 text-sm font-medium whitespace-nowrap text-ink-faint">
+							<TechIcon slug={skill.icon} size={17} class="text-(--brand) opacity-80" />
+							{skill.name}
+						</li>
+					))}
+				</ul>
+			))
+		}
+	</div>
+</div>
