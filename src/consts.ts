@@ -19,8 +19,7 @@ export const CONTACT = {
 	phone: '06 47 30 72 93',
 	github: 'https://github.com/Franckprivat',
 	githubHandle: '@Franckprivat',
-	// TODO Franck : remplace par l'URL exacte de ton profil LinkedIn.
-	linkedin: 'https://www.linkedin.com/in/franck-kiemde',
+	linkedin: 'https://www.linkedin.com/in/franck-k-35451418a/',
 	/** CV téléchargeable — dépose ton PDF dans public/cv-franck-kiemde.pdf */
 	cv: '/cv-franck-kiemde.pdf',
 } as const;

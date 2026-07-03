@@ -28,6 +28,7 @@
 	--accent-soft: oklch(0.55 0.24 285 / 10%);
 	--accent-2: oklch(0.72 0.14 210);
 	--glow: oklch(0.55 0.24 285 / 22%);
+	--glow-2: oklch(0.72 0.14 210 / 16%);
 	--card-shine: oklch(1 0 0 / 65%);
 }
 
@@ -35,7 +36,7 @@
 	/* Thème sombre — thème principal */
 	--bg: oklch(0.145 0.015 285);
 	--bg-soft: oklch(0.18 0.018 285);
-	--surface: oklch(0.98 0.01 285 / 4%);
+	--surface: oklch(0.98 0.01 285 / 7%);
 	--surface-solid: oklch(0.19 0.018 285);
 	--border-c: oklch(0.98 0.01 285 / 9%);
 	--border-strong: oklch(0.98 0.01 285 / 18%);
@@ -46,6 +47,7 @@
 	--accent-soft: oklch(0.68 0.21 290 / 14%);
 	--accent-2: oklch(0.8 0.13 210);
 	--glow: oklch(0.68 0.21 290 / 30%);
+	--glow-2: oklch(0.8 0.13 210 / 20%);
 	--card-shine: oklch(0.98 0.01 285 / 7%);
 }
 
@@ -124,11 +126,29 @@ body {
 
 /* ------------------------------- Composants -------------------------------- */
 
+/* Surface translucide de base — sans backdrop-filter : sur des petits
+   éléments (badges, boutons) le flou est invisible mais coûte très cher
+   au GPU. Le vrai verre dépoli (glass-blur) est réservé aux grandes
+   surfaces posées au-dessus du contenu. */
 @utility glass {
 	background: var(--surface);
-	backdrop-filter: blur(16px);
-	-webkit-backdrop-filter: blur(16px);
 	border: 1px solid var(--border-c);
+}
+
+@utility glass-blur {
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+}
+
+/* Halo lumineux : rendu identique à un cercle flouté (blur 100px+),
+   mais en dégradé radial pré-calculé → aucun coût de filtre GPU. */
+@utility soft-glow {
+	background: radial-gradient(circle closest-side, var(--glow), transparent 72%);
+	border-radius: 9999px;
+}
+@utility soft-glow-2 {
+	background: radial-gradient(circle closest-side, var(--glow-2), transparent 72%);
+	border-radius: 9999px;
 }
 
 @utility text-gradient {
