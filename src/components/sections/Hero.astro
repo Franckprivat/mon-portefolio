@@ -59,7 +59,7 @@ const floating = [
 
 			<h1 class="font-display text-5xl font-bold tracking-tight text-ink sm:text-6xl lg:text-7xl">
 				<span class="block" data-split>{SITE.name.split(' ')[0]}</span>
-				<span class="text-gradient block" data-split data-split-delay="0.15">
+				<span class="text-gradient block" data-split data-split-delay="0.1">
 					{SITE.name.split(' ')[1]}
 				</span>
 			</h1>
@@ -67,7 +67,7 @@ const floating = [
 			<p
 				class="font-display mt-4 text-xl font-medium text-ink-muted sm:text-2xl"
 				data-reveal="up"
-				data-reveal-delay="0.35"
+				data-reveal-delay="0.1"
 			>
 				{SITE.role}
 			</p>
@@ -75,14 +75,14 @@ const floating = [
 			<p
 				class="mt-5 max-w-lg text-base leading-relaxed text-ink-muted"
 				data-reveal="up"
-				data-reveal-delay="0.45"
+				data-reveal-delay="0.15"
 			>
 				Étudiant en Master of Science à <strong class="text-ink">EPITECH Montpellier</strong> avec
 				un parcours en marketing digital, je conçois des applications web et mobiles complètes —
 				du design de l'interface à l'API. Mon terrain de jeu : TypeScript, React, NestJS et Docker.
 			</p>
 
-			<div class="mt-8 flex flex-wrap items-center gap-4" data-reveal="up" data-reveal-delay="0.55">
+			<div class="mt-8 flex flex-wrap items-center gap-4" data-reveal="up" data-reveal-delay="0.2">
 				<Button href="/projects">
 					Voir mes projets
 					<ArrowRight
@@ -94,7 +94,7 @@ const floating = [
 				<Button href="/contact" variant="ghost">Me contacter</Button>
 			</div>
 
-			<ul class="mt-10 flex gap-3" data-reveal="up" data-reveal-delay="0.65">
+			<ul class="mt-10 flex gap-3" data-reveal="up" data-reveal-delay="0.25">
 				{
 					socials.map(({ label, href, Icon, brand }) => (
 						<li>
@@ -114,7 +114,7 @@ const floating = [
 		</div>
 
 		<!-- Colonne visuelle : éditeur de code -->
-		<div class="relative hidden lg:block" data-reveal="zoom" data-reveal-delay="0.4">
+		<div class="relative hidden lg:block" data-reveal="zoom" data-reveal-delay="0.15">
 			<!-- Anneau décoratif en rotation lente -->
 			<div
 				class="absolute -inset-10 -z-10 animate-spin-slow rounded-full border border-dashed border-line-strong motion-reduce:animate-none"
@@ -165,7 +165,7 @@ const floating = [
 		class="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-ink-faint transition-colors hover:text-ink md:flex"
 		aria-label="Faire défiler vers la section suivante"
 		data-reveal="fade"
-		data-reveal-delay="1"
+		data-reveal-delay="0.35"
 	>
 		<span class="text-[10px] font-medium tracking-[0.25em] uppercase">Découvrir</span>
 		<ArrowDown size={15} class="animate-bounce motion-reduce:animate-none" aria-hidden="true" />

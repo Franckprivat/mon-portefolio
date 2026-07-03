@@ -25,7 +25,9 @@ let lenis: Lenis | null = null;
 function setupLenis(): void {
 	if (reducedMotion || lenis) return;
 
-	lenis = new Lenis({ autoRaf: false, lerp: 0.12 });
+	// lerp élevé = le scroll suit la molette de près : fluide mais réactif,
+	// jamais « flottant ».
+	lenis = new Lenis({ autoRaf: false, lerp: 0.3 });
 	lenis.on('scroll', ScrollTrigger.update);
 	gsap.ticker.add((time) => lenis?.raf(time * 1000));
 	gsap.ticker.lagSmoothing(0);
@@ -43,12 +45,14 @@ export function scrollTo(target: string | number | HTMLElement): void {
 
 /* ------------------------------ Reveal au scroll ----------------------------- */
 
+/* Distances courtes + durées brèves : l'animation se voit,
+   mais ne fait jamais attendre. */
 const REVEAL_FROM: Record<string, gsap.TweenVars> = {
-	up: { y: 40, opacity: 0 },
-	down: { y: -40, opacity: 0 },
-	left: { x: -48, opacity: 0 },
-	right: { x: 48, opacity: 0 },
-	zoom: { scale: 0.92, opacity: 0 },
+	up: { y: 22, opacity: 0 },
+	down: { y: -22, opacity: 0 },
+	left: { x: -26, opacity: 0 },
+	right: { x: 26, opacity: 0 },
+	zoom: { scale: 0.96, opacity: 0 },
 	fade: { opacity: 0 },
 };
 
@@ -69,10 +73,10 @@ function setupReveals(): void {
 			x: 0,
 			scale: 1,
 			opacity: 1,
-			duration: 0.9,
-			delay,
-			ease: 'power3.out',
-			scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+			duration: 0.5,
+			delay: Math.min(delay, 0.35),
+			ease: 'power2.out',
+			scrollTrigger: { trigger: el, start: 'top 92%', once: true },
 		});
 	});
 
@@ -83,14 +87,14 @@ function setupReveals(): void {
 
 		gsap.fromTo(
 			children,
-			{ y: 36, opacity: 0 },
+			{ y: 20, opacity: 0 },
 			{
 				y: 0,
 				opacity: 1,
-				duration: 0.8,
-				stagger: 0.09,
-				ease: 'power3.out',
-				scrollTrigger: { trigger: group, start: 'top 85%', once: true },
+				duration: 0.45,
+				stagger: 0.05,
+				ease: 'power2.out',
+				scrollTrigger: { trigger: group, start: 'top 90%', once: true },
 			}
 		);
 	});
@@ -128,11 +132,11 @@ function setupTextReveals(): void {
 			{ yPercent: 110 },
 			{
 				yPercent: 0,
-				duration: 0.85,
-				stagger: 0.045,
-				ease: 'power4.out',
+				duration: 0.55,
+				stagger: 0.025,
+				ease: 'power3.out',
 				delay: Number(el.dataset.splitDelay || 0),
-				scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+				scrollTrigger: { trigger: el, start: 'top 92%', once: true },
 			}
 		);
 	});
@@ -155,9 +159,9 @@ function setupBars(): void {
 			{ width: '0%' },
 			{
 				width: `${level}%`,
-				duration: 1.1,
-				ease: 'power3.out',
-				scrollTrigger: { trigger: bar, start: 'top 92%', once: true },
+				duration: 0.7,
+				ease: 'power2.out',
+				scrollTrigger: { trigger: bar, start: 'top 94%', once: true },
 			}
 		);
 	});
