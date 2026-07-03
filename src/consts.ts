@@ -11,7 +11,7 @@ export const SITE = {
 		"Portfolio de Franck Kiemde — développeur fullstack, étudiant en Master of Science à EPITECH Montpellier, en recherche d'alternance dès septembre 2026. Next.js, NestJS, React Native, TypeScript.",
 	locale: 'fr_FR',
 	lang: 'fr',
-	location: 'Montpellier',
+	location: 'Montpellier, France',
 } as const;
 
 export const CONTACT = {
